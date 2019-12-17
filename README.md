@@ -1,9 +1,8 @@
 <h1 align="center">
-  <br>
-  <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra title.svg" alt="Tundra title" height="150">
+  <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra title.svg" alt="Tundra title" height="250">
 </h1>
 
-<h4 align="center">The comprenhensive template engine.</h4>
+<h4 align="center">The comprehensive template engine.</h4>
 
 <p align="center">
 <img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.1.3-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
