@@ -1,9 +1,6 @@
 <h1 align="center">
   <br>
   <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra title.svg" alt="Tundra title" height="150">
-  <br>
-  Tundra
-  <br>
 </h1>
 
 <h4 align="center">The comprenhensive template engine.</h4>
