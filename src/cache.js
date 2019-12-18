@@ -55,7 +55,7 @@ module.exports = class Cache {
     get(dir, encoding) 
     {
         dir = path.join(cache_dir, dir);
-        var content = false;
+        let content = false;
         
         if (exists(dir)) {
             try {
@@ -78,7 +78,7 @@ module.exports = class Cache {
      */
     getRender(dir, data = {}, encoding)
     {
-        var func = this.get(dir, encoding),
+        let func = this.get(dir, encoding),
             content = "";
 
         if (func === false) {

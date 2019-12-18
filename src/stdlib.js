@@ -13,9 +13,10 @@
  */
 global.sum = (...args) => 
 {
-    var result = 0;
+    let result = 0;
+    let i;
 
-    for (var i = 0; i < args.length; i++) {
+    for (i = 0; i < args.length; i++) {
         result += parseFloat(args[i]);
     }
 
@@ -31,9 +32,10 @@ global.sum = (...args) =>
  */
 global.subtract = (...args) => 
 {
-    var result = 0;
+    let result = 0;
+    let i;
 
-    for (var i = 0; i < args.length; i++) {
+    for (i = 0; i < args.length; i++) {
         result -= parseFloat(args[i]);
     }
 

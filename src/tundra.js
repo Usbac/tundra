@@ -131,7 +131,7 @@ function getCode(element, data = {})
     switch(true) {
         //Require
         case regexs.require.test(element):
-            var dir = element.replace(regexs.require, "$2");
+            let dir = element.replace(regexs.require, "$2");
             if (!exists(dir)) {
                 console.log(`${ERROR_NOT_FOUND} (${dir})`);
                 return ``;
@@ -170,7 +170,7 @@ function getCode(element, data = {})
  */
 function getRender(dir, data = {})
 {
-    var func = getSourceCode(dir, data),
+    let func = getSourceCode(dir, data),
         content = "";
 
     if (func === false) {
@@ -199,11 +199,11 @@ function getSourceCode(dir, data)
         return false;
     }
 
-    var content = fs.readFileSync(dir, encoding);
-    var func = `with (this) { \n var ${ARRAY} = [];\n`;
+    let content = fs.readFileSync(dir, encoding);
+    let func = `with (this) { \n var ${ARRAY} = [];\n`;
 
     if (regexs.extends.test(content)) {
-        var parent_dir = regexs.extends.exec(content)[2];
+        let parent_dir = regexs.extends.exec(content)[2];
         content = getInheritCode(parent_dir, content);
     }
 
@@ -212,7 +212,6 @@ function getSourceCode(dir, data)
     });
 
     func = removeRaw(func);
-
     func += `return ${ARRAY}.join(''); \n }`;
 
     return func;
@@ -246,7 +245,6 @@ function getInheritCode(parent_dir, content)
 
     parent_content = parent_content.replace(block_regex, e => {
         let block_name = e.replace(block_regex, "$4").trim();
-    
         return getBlock(content, block_name);
     });
 
@@ -286,7 +284,7 @@ function getBlock(content, block_name, log = false)
 function removeRaw(str)
 {
     Object.keys(lookaround_regexs).forEach(key => {
-        var regex = `${regex_raw}(${ lookaround_regexs[key].source.replace(regex_not_raw, '') })`;
+        let regex = `${regex_raw}(${ lookaround_regexs[key].source.replace(regex_not_raw, '') })`;
         str = str.replace(new RegExp(regex), '$1');
     });
 
@@ -343,7 +341,7 @@ module.exports = class View {
      */
     getRender(dir, data = {}) 
     {    
-        if (general_regex == undefined) {
+        if (typeof general_regex == 'undefined') {
             setRegex();
         }
 
@@ -361,19 +359,18 @@ module.exports = class View {
             return getRender(dir, data);
         }
 
+        let cache_exists = cache.exists(dir);
+
         //With cache
-        if (!cache.exists(dir) && !exists(dir)) {
-            console.log(`${ERROR_NOT_FOUND} (${dir})`);
-            return false;
+        if (!cache_exists) {
+            if (!exists(dir)) {
+                console.log(`${ERROR_NOT_FOUND} (${dir})`);
+                return false;
+            }
+
+            cache.write(dir, getSourceCode(dir, data));
         }
 
-        var content = cache.get(dir, encoding);
-
-        if (content === false) {
-            content = getSourceCode(dir, data);
-        }
-        
-        cache.write(dir, content);            
         return cache.getRender(dir, data, encoding);
     }
 
@@ -387,7 +384,7 @@ module.exports = class View {
      */
     render(res, dir, data = {}) 
     {
-        var content = this.getRender(dir, data);
+        let content = this.getRender(dir, data);
 
         if (content !== false) {
             res.write(content);
