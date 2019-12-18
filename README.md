@@ -5,7 +5,7 @@
 <h4 align="center">The comprehensive template engine for Nodejs.</h4>
 
 <p align="center">
-<img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.1.3-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
+<img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.1.4-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
 Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework or technology.
@@ -59,6 +59,7 @@ var view = new Tundra();
 
 http.createServer((req, res) => {
     var data = {
+        title: 'Tundra',
         msg: 'Hello World!'
     };
 
@@ -72,7 +73,7 @@ View:
 ```html
 <!DOCTYPE html>
     <head>
-        <title>Tundra</title>
+        <title>{{ title }}</title>
     </head>
     <body>
         {{ msg }}
