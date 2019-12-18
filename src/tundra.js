@@ -1,6 +1,5 @@
 require('./stdlib.js');
 const fs = require('fs');
-const path = require('path');
 const Cache = require('./cache.js');
 const cache = new Cache();
 
@@ -151,7 +150,7 @@ function getCode(element, data = {})
             return `${element.replace(regexs.code, '$2')}\n`;
         //Print
         case regexs.print.test(element):
-            return `${ARRAY}.push(escape(${ element.replace(regexs.print, '$2') }));\n`;
+            return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));\n`;
         //Print plain
         case regexs.print_plain.test(element): 
             return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});\n`;

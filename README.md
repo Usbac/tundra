@@ -2,13 +2,13 @@
   <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra title.svg" alt="Tundra title" height="250">
 </h1>
 
-<h4 align="center">The comprehensive template engine.</h4>
+<h4 align="center">The comprehensive template engine for Nodejs.</h4>
 
 <p align="center">
 <img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.1.3-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
-Tundra is a small, fast and customizable template engine for Javascript. It perfectly integrates with any back-end framework or technology.
+Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework or technology.
 
 ## Features
 
@@ -27,13 +27,15 @@ Tundra is a small, fast and customizable template engine for Javascript. It perf
 ## Code snippets
 
 ```html
-{{ variable }}
+{{ print_variable }}
 
-{! no_escaped_variable !}
+{! print_variable_without_escaping_it !}
 
 {# comment #}
 
 {% var code_inside_this_tags = true %}
+
+~{{ escape_template_tags }}
 
 @require(imported_view.html)
 
@@ -48,7 +50,7 @@ Tundra is a small, fast and customizable template engine for Javascript. It perf
 
 Rendering a simple view
 
-Controller:
+Main file:
 
 ```js
 var http = require('http');
