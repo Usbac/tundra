@@ -71,16 +71,17 @@ function setRegex()
         'extends': new RegExp(`${regex_not_raw}(?=@extends\\()(.*)(?<=\\))`),
         'require': new RegExp(`${regex_not_raw}(?=@require\()(.*)(?<=\))`),
         'comment': new RegExp(`${regex_not_raw}(?={#)([\\s\\S]*?)(?<=#})`),
-        'print_plain': new RegExp(`${regex_not_raw}(?={!)(.*)(?<=!})`),
-        'print': new RegExp(`${regex_not_raw}(?={{)(.*)(?<=}})`),
-        'code': new RegExp(`${regex_not_raw}(?={%)(.*)(?<=%})`),
-        'code_begin': new RegExp(`${regex_not_raw}(?={%)(.*)(?<=:( ?){1,}%})`),
+        'print_plain': new RegExp(`${regex_not_raw}(?={!)(.*?)(?<=!})`),
+        'print': new RegExp(`${regex_not_raw}(?={{)(.*?)(?<=}})`),
+        'code': new RegExp(`${regex_not_raw}(?={%)(.*?)(?<=%})`),
+        'code_begin': new RegExp(`${regex_not_raw}(?={%)(.*?)(?<=:( ?){1,}%})`),
         'code_end': new RegExp(`${regex_not_raw}(?={%)( ?){1,}end( ?){1,}(?<=%})`)
     }
 
     UpdateNormalRegex();
     updateGeneralRegex();
 }
+
 
 /**
  * Sets the regexs array values equal to lookaround_regex array values
@@ -419,18 +420,22 @@ module.exports = class View {
      */
     set(key, first_val, last_val = '') 
     {
-        if (general_regex == undefined) {
+        if (typeof general_regex == 'undefined') {
             setRegex();
         }
 
         switch(key) {
             case 'code': 
-                lookaround_regexs.code = new RegExp(`(?=${first_val})(.*)(?<=${last_val})`);
-                lookaround_regexs.code_begin = new RegExp(`(?=${first_val})(.*)(?<=:( ?){1,}${last_val})`);
-                lookaround_regexs.code_end = new RegExp(`(?=${first_val})( ?){1,}end( ?){1,}(?<=${last_val})`);
+                lookaround_regexs.code = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
+                lookaround_regexs.code_begin = new RegExp(`${regex_not_raw}(?=${first_val})(.*)(?<=:( ?){1,}${last_val})`);
+                lookaround_regexs.code_end = new RegExp(`${regex_not_raw}(?=${first_val})( ?){1,}end( ?){1,}(?<=${last_val})`);
                 break;
-            case 'comment': case 'print_plain': case 'print':
-                lookaround_regexs[key] = new RegExp(`(?=${first_val})(.*)(?<=${last_val})`);
+            case 'print_plain': case 'print':
+                lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
+                console.log(lookaround_regexs[key]);
+                break;
+            case 'comment':
+                lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})([\\s\\S]*?)(?<=${last_val})`);
                 break;
             case 'raw':
                 regex_raw = first_val;
@@ -441,6 +446,7 @@ module.exports = class View {
                 return false;
         }
         
+        UpdateNormalRegex();
         updateGeneralRegex();
         return true;
     }
