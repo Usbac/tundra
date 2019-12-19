@@ -114,3 +114,102 @@ global.url = (req, route) =>
 
     return protocol + "://" + req.headers.host + route;
 }
+
+
+/**
+ * Returns the given string with the whitespaces removed from both sides of it
+ * and its first letter uppercase.
+ * @param {string} str - The string.
+ * @returns {string} The given string with the whitespaces removed from both sides of it
+ * and its first letter uppercase.
+ */
+global.title = (str) =>
+{
+    str = str.trim();
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+/**
+ * Returns the given string with all its words starting with uppercase letters.
+ * @param {string} str - The string.
+ * @returns {string} The given string with all its words starting with uppercase letters.
+ */
+global.capitalize = (str) =>
+{
+    let arr = str.split(' ');
+
+    arr.forEach((e, index) => {
+        arr[index] = e.charAt(0).toUpperCase() + e.slice(1);
+    });
+
+    return arr.join(' ');
+}
+
+
+/**
+ * Returns an array containing the numbers from the specified start to the specified end.
+ * @param {Number} start - The start number.
+ * @param {Number} end - The final number.
+ * @param {Number} steps - The increase steps.
+ * @returns {array} An array containing the numbers from the specified start to the specified end.
+ */
+global.range = (start, end, steps = 1) =>
+{
+    if (start > end) {
+        return [];
+    }
+    
+    let arr = [ start ];
+    let i = start;
+
+    while(true) {
+        i += steps;
+
+        if (i <= end) {
+            arr.push(i);
+        } else {
+            break;
+        }
+    }
+
+    return arr;
+}
+
+
+/**
+ * Returns the given array as a string joined by the given glues.
+ * A third parameter can be provided which will be the separator 
+ * between the last two elements of the array.
+ * @param {array} arr - The array.
+ * @param {string} glue - The glue.
+ * @param {string} last_glue - The glue between the last two elements.
+ * @returns {string} The given array as a string joined by the given glues.
+ */
+global.join = (arr, glue, last_glue = '') =>
+{
+    if (arr.length <= 1) {
+        return arr.toString();
+    }
+
+    if (last_glue == '') {
+        last_glue = glue;
+    }
+
+    let last = arr.pop();
+
+    return arr.join(glue) + last_glue + last;
+}
+
+
+/**
+ * Returns the given value as a number and rounded to the specified decimals.
+ * If no decimal value is passed, 2 will be used by default.
+ * @param {Number} number - The number.
+ * @param {Number} [decimals] - The decimal places to round.
+ * @returns {Number} The given value as number and rounded to the specified decimals.
+ */
+global.round = (number, decimals = 2) =>
+{
+    return parseFloat((+number).toFixed(decimals));
+}

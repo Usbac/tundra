@@ -1,6 +1,6 @@
 {
   "name": "tundrajs",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "The comprehensive template engine",
   "main": "src/tundra.js",
   "scripts": {
