@@ -1,5 +1,6 @@
 require('./stdlib.js');
 const fs = require('fs');
+const path = require('path');
 const Cache = require('./cache.js');
 const cache = new Cache();
 
@@ -20,13 +21,13 @@ var regex_raw;
  * The negation of the raw regex.
  * @type {string}
  */
-var regex_not_raw; 
+var regex_not_raw;
 
 /**
  * List of the existing regexs.
  * @type {Object}
  */
-var regexs; 
+var regexs;
 
 /**
  * List of the existing regexs with lookarounds.
@@ -54,6 +55,11 @@ var encoding = DEFAULT_ENCODING;
  */
 var extension = '';
 
+/**
+ * The base directory for the views.
+ * @type {string}
+ */
+var base_dir = '';
 
 /**
  * Initializes all the regex variables.
@@ -327,6 +333,10 @@ module.exports = class View {
             this.setEncoding(options.encoding);
         }
 
+        if (options.hasOwnProperty('base')) {
+            this.setBase(options.base);
+        }
+
         if (options.hasOwnProperty('extension')) {
             this.setExtension(options.extension);
         }
@@ -349,26 +359,28 @@ module.exports = class View {
             dir = `${dir}.${extension}`;
         }
 
+        var complete_dir = path.join(base_dir, dir);
+
         //Without cache
         if (!cache.isActive()) {
-            if (!exists(dir)) {
-                console.log(`${ERROR_NOT_FOUND} (${dir})`);
+            if (!exists(complete_dir)) {
+                console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
                 return false;
             }
 
-            return getRender(dir, data);
+            return getRender(complete_dir, data);
         }
 
         let cache_exists = cache.exists(dir);
 
         //With cache
         if (!cache_exists) {
-            if (!exists(dir)) {
-                console.log(`${ERROR_NOT_FOUND} (${dir})`);
+            if (!exists(complete_dir)) {
+                console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
                 return false;
             }
 
-            cache.write(dir, getSourceCode(dir, data));
+            cache.write(dir, getSourceCode(complete_dir, data));
         }
 
         return cache.getRender(dir, data, encoding);
@@ -466,6 +478,26 @@ module.exports = class View {
     getEncoding()
     {
         return encoding;
+    }
+
+
+    /**
+     * Sets the base directory for the views.
+     * @param {string} [new_encoding] - The new base directory.
+     */
+    setBase(dir = '') 
+    {
+        base_dir = dir;
+    }
+
+
+    /**
+     * Returns the base directory for the views.
+     * @returns {string} The base directory.
+     */
+    getBase()
+    {
+        return base_dir;
     }
 
 
