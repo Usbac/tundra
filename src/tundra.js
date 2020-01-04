@@ -140,30 +140,30 @@ function getCode(element, data = {})
             let dir = element.replace(regexs.require, "$2");
             if (!exists(dir)) {
                 console.log(`${ERROR_NOT_FOUND} (${dir})`);
-                return ``;
+                return '';
             }
 
-            return `${ARRAY}.push(\`${getRender(dir, data)}\`);\n`;
+            return `${ARRAY}.push(\`${getRender(dir, data)}\`);`;
         case regexs.comment.test(element):
             return '';
         //Begin code block
         case regexs.code_begin.test(element): 
-            return `${element.replace(regexs.code_begin, '$2 {')}\n`;
+            return `${element.replace(regexs.code_begin, '$2 {')}`;
         //End code block
         case regexs.code_end.test(element):
-            return "}\n";
+            return "}";
         //Code
         case regexs.code.test(element): 
-            return `${element.replace(regexs.code, '$2')}\n`;
+            return `${element.replace(regexs.code, '$2')}`;
         //Print
         case regexs.print.test(element):
-            return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));\n`;
+            return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));`;
         //Print plain
         case regexs.print_plain.test(element): 
-            return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});\n`;
+            return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});`;
         //Text
         default:
-            return `${ARRAY}.push(\`${element}\`);\n`;
+            return `${ARRAY}.push(\`${element}\`);`;
     }
 }
 
@@ -214,7 +214,7 @@ function getSourceCode(dir, data)
     }
 
     content.split(general_regex).filter(e => e).forEach(e => {
-        func += getCode(e, data);
+        func += `${getCode(e, data)}\n`;
     });
 
     func = removeRaw(func);
@@ -483,7 +483,7 @@ module.exports = class View {
 
     /**
      * Sets the base directory for the views.
-     * @param {string} [new_encoding] - The new base directory.
+     * @param {string} [dir] - The new base directory.
      */
     setBase(dir = '') 
     {
