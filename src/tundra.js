@@ -325,6 +325,16 @@ module.exports = class View {
      * The valid options keys are: 'cache', 'encoding' and 'extesion'
      */
     constructor(options = {}) {
+        this.setOptions(options);
+    }
+
+
+    /** 
+     * Set the options.
+     * @param {Object} options - The default options used for the views.
+     * The valid options keys are: 'cache', 'encoding' and 'extesion'
+     */
+    setOptions(options) {
         if (options.hasOwnProperty('cache')) {
             cache.setDir(options.cache);
         }
@@ -339,7 +349,7 @@ module.exports = class View {
 
         if (options.hasOwnProperty('extension')) {
             this.setExtension(options.extension);
-        }
+        } 
     }
 
 

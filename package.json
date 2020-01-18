@@ -1,6 +1,6 @@
 {
   "name": "tundrajs",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "The comprehensive template engine",
   "main": "src/tundra.js",
   "scripts": {
@@ -13,6 +13,8 @@
   "keywords": [
     "template",
     "engine",
+    "render",
+    "nodejs",
     "views"
   ],
   "author": "usbac",
