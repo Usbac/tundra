@@ -11,7 +11,7 @@
  * @param {string} args - The argument list.
  * @returns {string} The sum of all the given arguments.
  */
-global.sum = (...args) => 
+sum = (...args) =>
 {
     let result = 0;
     let i;
@@ -30,7 +30,7 @@ global.sum = (...args) =>
  * @param {string} args - The argument list.
  * @returns {string} The subtraction of all the given arguments.
  */
-global.subtract = (...args) => 
+subtract = (...args) =>
 {
     let result = 0;
     let i;
@@ -50,7 +50,7 @@ global.subtract = (...args) =>
  * @returns {string} the given string with the HTML tags escaped.
  * Those are: '&', '"', '<' and '>'.
  */
-global.escape = (str) => 
+escape = (str) =>
 {
     return str.toString().replace(/&/g, '&amp;')
                          .replace(/"/g, '&quot;')
@@ -65,7 +65,7 @@ global.escape = (str) =>
  * @param {string} subtr - The substring used to cut the main.
  * @returns {string} Everything before the specified substring.
  */
-global.strBefore = (str, substr) => 
+strBefore = (str, substr) =>
 {
     return str.substring(0, str.lastIndexOf(substr));
 }
@@ -77,7 +77,7 @@ global.strBefore = (str, substr) =>
  * @param {string} subtr - The substring used to cut the main.
  * @returns {string} Everything after the specified substring.
  */
-global.strAfter = (str, substr) => 
+strAfter = (str, substr) =>
 {
     return str.substring(str.lastIndexOf(substr) + substr.length);
 }
@@ -89,7 +89,7 @@ global.strAfter = (str, substr) =>
  * @param {string} subtr - The substring that will be removed.
  * @returns {string} The main string with the given substring removed.
  */
-global.remove = (str, substr) =>
+remove = (str, substr) =>
 {
     return str.replace(new RegExp(substr, 'g'), '');
 }
@@ -101,7 +101,7 @@ global.remove = (str, substr) =>
  * @param {string} route - The route.
  * @returns {string} The local url.
  */
-global.url = (req, route) => 
+url = (req, route) =>
 {
     if (route.charAt(0) !== '/') {
         route = '/' + route;
@@ -123,7 +123,7 @@ global.url = (req, route) =>
  * @returns {string} The given string with the whitespaces removed from both sides of it
  * and its first letter uppercase.
  */
-global.title = (str) =>
+title = (str) =>
 {
     str = str.trim();
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -135,7 +135,7 @@ global.title = (str) =>
  * @param {string} str - The string.
  * @returns {string} The given string with all its words starting with uppercase letters.
  */
-global.capitalize = (str) =>
+capitalize = (str) =>
 {
     let arr = str.split(' ');
 
@@ -154,12 +154,12 @@ global.capitalize = (str) =>
  * @param {Number} steps - The increase steps.
  * @returns {array} An array containing the numbers from the specified start to the specified end.
  */
-global.range = (start, end, steps = 1) =>
+range = (start, end, steps = 1) =>
 {
     if (start > end) {
         return [];
     }
-    
+
     let arr = [ start ];
     let i = start;
 
@@ -179,14 +179,14 @@ global.range = (start, end, steps = 1) =>
 
 /**
  * Returns the given array as a string joined by the given glues.
- * A third parameter can be provided which will be the separator 
+ * A third parameter can be provided which will be the separator
  * between the last two elements of the array.
  * @param {array} arr - The array.
  * @param {string} glue - The glue.
  * @param {string} last_glue - The glue between the last two elements.
  * @returns {string} The given array as a string joined by the given glues.
  */
-global.join = (arr, glue, last_glue = '') =>
+join = (arr, glue, last_glue = '') =>
 {
     if (arr.length <= 1) {
         return arr.toString();
@@ -209,7 +209,7 @@ global.join = (arr, glue, last_glue = '') =>
  * @param {Number} [decimals] - The decimal places to round.
  * @returns {Number} The given value as number and rounded to the specified decimals.
  */
-global.round = (number, decimals = 2) =>
+round = (number, decimals = 2) =>
 {
     return parseFloat((+number).toFixed(decimals));
 }

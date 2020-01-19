@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-require('./stdlib.js');
 
 /**
  * The cache directory.
@@ -10,10 +9,10 @@ var cache_dir = "";
 
 
 /**
- * Makes the given cache directory if it does not exists yet. 
+ * Makes the given cache directory if it does not exists yet.
  * @param {string} dir - The cache file directory.
  */
-function mkDir(dir) 
+function mkDir(dir)
 {
     try {
         if (!fs.statSync(dir).isDirectory()) {
@@ -30,7 +29,7 @@ function mkDir(dir)
  * @param {string} dir - The file directory.
  * @returns {string} True if the given file cache exists, false otherwise.
  */
-function exists(dir) 
+function exists(dir)
 {
     try {
         if (fs.statSync(dir).isFile()) {
@@ -52,16 +51,16 @@ module.exports = class Cache {
      * @param {string} encoding - The encoding used for the file.
      * @returns {string} The content of a cache file.
      */
-    get(dir, encoding) 
+    get(dir, encoding)
     {
         dir = path.join(cache_dir, dir);
         let content = false;
-        
+
         if (exists(dir)) {
             try {
                 content = fs.readFileSync(dir, encoding);
             } catch(err) {
-                console.log(err);
+                throw new Error(err);
             }
         }
 
@@ -88,7 +87,6 @@ module.exports = class Cache {
         try {
             content = new Function(func).apply(data);
         } catch(err) {
-            console.log(content);
             throw new Error(err);
         }
 
@@ -101,7 +99,7 @@ module.exports = class Cache {
      * @param {string} dir - The cache file directory.
      * @param {string} content - The content to copy to the file.
      */
-    write(dir, content) 
+    write(dir, content)
     {
         dir = path.join(cache_dir, dir);
 
@@ -118,7 +116,7 @@ module.exports = class Cache {
         });
     }
 
-    
+
     /**
      * Returns true if the given file cache exists, false otherwise.
      * @param {string} dir - The file directory.
@@ -129,7 +127,7 @@ module.exports = class Cache {
         return exists(path.join(cache_dir, dir));
     }
 
-    
+
     /**
      * Sets the cache directory used for the views.
      * @param {string} dir - The new cache directory.
@@ -154,7 +152,7 @@ module.exports = class Cache {
      * Returns true if the cache is active, false otherwise.
      * @returns {string} True if the cache is active, false otherwise.
      */
-    isActive() 
+    isActive()
     {
         return cache_dir.length > 0;
     }

@@ -1,4 +1,3 @@
-require('./stdlib.js');
 const fs = require('fs');
 const path = require('path');
 const Cache = require('./cache.js');
@@ -33,7 +32,7 @@ var regexs;
  * List of the existing regexs with lookarounds.
  * @type {Object}
  */
-var lookaround_regexs; 
+var lookaround_regexs;
 
 /**
  * The general regex which matches part of the existing regexs.
@@ -60,6 +59,7 @@ var extension = '';
  * @type {string}
  */
 var base_dir = '';
+
 
 /**
  * Initializes all the regex variables.
@@ -120,8 +120,8 @@ function updateGeneralRegex()
     general_regex = new RegExp(
         lookaround_regexs.require.source + '|' +
         lookaround_regexs.comment.source + '|' +
-        lookaround_regexs.code.source + '|' + 
-        lookaround_regexs.print.source + '|' + 
+        lookaround_regexs.code.source + '|' +
+        lookaround_regexs.print.source + '|' +
         lookaround_regexs.print_plain.source, 'gm');
 }
 
@@ -147,19 +147,19 @@ function getCode(element, data = {})
         case regexs.comment.test(element):
             return '';
         //Begin code block
-        case regexs.code_begin.test(element): 
+        case regexs.code_begin.test(element):
             return `${element.replace(regexs.code_begin, '$2 {')}`;
         //End code block
         case regexs.code_end.test(element):
             return "}";
         //Code
-        case regexs.code.test(element): 
+        case regexs.code.test(element):
             return `${element.replace(regexs.code, '$2')}`;
         //Print
         case regexs.print.test(element):
             return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));`;
         //Print plain
-        case regexs.print_plain.test(element): 
+        case regexs.print_plain.test(element):
             return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});`;
         //Text
         default:
@@ -184,6 +184,7 @@ function getRender(dir, data = {})
     }
 
     try {
+        require('./stdlib.js');
         content = new Function(func).apply(data);
     } catch(err) {
         throw new Error(err);
@@ -199,7 +200,7 @@ function getRender(dir, data = {})
  * @param {Object} data - The content used for the view.
  * @returns {string} The generated function source code of the given view file.
  */
-function getSourceCode(dir, data) 
+function getSourceCode(dir, data)
 {
     if (!exists(dir)) {
         return false;
@@ -262,7 +263,7 @@ function getInheritCode(parent_dir, content)
  * Returns the code that's inside a block tag.
  * @param {string} content - The string where the block will be searched.
  * @param {string} block_name - The name of the block.
- * @param {bool} log - Log errors or not if the block isn't found. 
+ * @param {bool} log - Log errors or not if the block isn't found.
  * @returns {string} The content inside the block.
  */
 function getBlock(content, block_name, log = false)
@@ -310,7 +311,7 @@ function exists(dir)
             return true;
         }
     } catch(err) {
-        return false; 
+        return false;
     }
 
     return false;
@@ -319,8 +320,8 @@ function exists(dir)
 
 module.exports = class View {
 
-    /** 
-     * @constructs 
+    /**
+     * @constructs
      * @param {Object} [options] - The default options used for the views.
      * The valid options keys are: 'cache', 'encoding' and 'extesion'
      */
@@ -329,7 +330,7 @@ module.exports = class View {
     }
 
 
-    /** 
+    /**
      * Set the options.
      * @param {Object} options - The default options used for the views.
      * The valid options keys are: 'cache', 'encoding' and 'extesion'
@@ -349,7 +350,7 @@ module.exports = class View {
 
         if (options.hasOwnProperty('extension')) {
             this.setExtension(options.extension);
-        } 
+        }
     }
 
 
@@ -359,8 +360,8 @@ module.exports = class View {
      * @param {Object} [data] - The content used for the view.
      * @returns {string} A view rendered.
      */
-    getRender(dir, data = {}) 
-    {    
+    getRender(dir, data = {})
+    {
         if (typeof general_regex == 'undefined') {
             setRegex();
         }
@@ -404,7 +405,7 @@ module.exports = class View {
      * @param {Object} [data] - The content used for the view.
      * @returns {bool} True if the view has been rendered, false otherwise.
      */
-    render(res, dir, data = {}) 
+    render(res, dir, data = {})
     {
         let content = this.getRender(dir, data);
 
@@ -422,7 +423,7 @@ module.exports = class View {
      * @param {string} dir - The file directory.
      * @returns {string} True if the given file exists, false otherwise.
      */
-    exists(dir) 
+    exists(dir)
     {
         return exists(dir);
     }
@@ -437,14 +438,14 @@ module.exports = class View {
      * @param {string} [last_val] - The last (right) value of the tag.
      * @returns {string} True in case of success, false otherwise.
      */
-    set(key, first_val, last_val = '') 
+    set(key, first_val, last_val = '')
     {
         if (typeof general_regex == 'undefined') {
             setRegex();
         }
 
         switch(key) {
-            case 'code': 
+            case 'code':
                 lookaround_regexs.code = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
                 lookaround_regexs.code_begin = new RegExp(`${regex_not_raw}(?=${first_val})(.*)(?<=:( ?){1,}${last_val})`);
                 lookaround_regexs.code_end = new RegExp(`${regex_not_raw}(?=${first_val})( ?){1,}end( ?){1,}(?<=${last_val})`);
@@ -464,7 +465,7 @@ module.exports = class View {
                 console.log(`${ERROR_INDEX} '${key}'`);
                 return false;
         }
-        
+
         UpdateNormalRegex();
         updateGeneralRegex();
         return true;
@@ -475,7 +476,7 @@ module.exports = class View {
      * Sets the file encoding used for the views.
      * @param {string} [new_encoding] - The new file encoding.
      */
-    setEncoding(new_encoding = DEFAULT_ENCODING) 
+    setEncoding(new_encoding = DEFAULT_ENCODING)
     {
         encoding = new_encoding;
     }
@@ -495,7 +496,7 @@ module.exports = class View {
      * Sets the base directory for the views.
      * @param {string} [dir] - The new base directory.
      */
-    setBase(dir = '') 
+    setBase(dir = '')
     {
         base_dir = dir;
     }
@@ -515,7 +516,7 @@ module.exports = class View {
      * Sets the file extension used for the views.
      * @param {string} [new_extension] - The new file extension.
      */
-    setExtension(new_extension = '') 
+    setExtension(new_extension = '')
     {
         extension = new_extension;
     }
