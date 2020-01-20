@@ -35,7 +35,7 @@ var regexs;
 var lookaround_regexs;
 
 /**
- * The general regex which matches part of the existing regexs.
+ * The general regex which matches most  of the existing regexs.
  * This is used to split the view content and iterate and replace
  * over its matches.
  * @type {RegExp}
@@ -93,7 +93,8 @@ function setRegex()
  * Sets the regexs array values equal to lookaround_regex array values
  * without zero-length assertions (lookarounds).
  */
-function UpdateNormalRegex() {
+function UpdateNormalRegex()
+{
     Object.keys(lookaround_regexs).forEach(key => {
         regexs[key] = noLookarounds(lookaround_regexs[key]);
     });
@@ -106,7 +107,8 @@ function UpdateNormalRegex() {
  * @param {string} regex - The regular expression.
  * @returns {string} The given regex without zero-length assertions.
  */
-function noLookarounds(regex) {
+function noLookarounds(regex)
+{
     return new RegExp(regex.source.replace(/(\?\=|\?\<\=)/gm, ''));
 }
 
@@ -325,7 +327,8 @@ module.exports = class View {
      * @param {Object} [options] - The default options used for the views.
      * The valid options keys are: 'cache', 'encoding' and 'extesion'
      */
-    constructor(options = {}) {
+    constructor(options = {})
+    {
         this.setOptions(options);
     }
 
@@ -335,7 +338,8 @@ module.exports = class View {
      * @param {Object} options - The default options used for the views.
      * The valid options keys are: 'cache', 'encoding' and 'extesion'
      */
-    setOptions(options) {
+    setOptions(options)
+    {
         if (options.hasOwnProperty('cache')) {
             cache.setDir(options.cache);
         }
