@@ -123,7 +123,7 @@ url = (req, route) =>
  * @returns {string} The given string with the whitespaces removed from both sides of it
  * and its first letter uppercase.
  */
-title = (str) =>
+titleCase = (str) =>
 {
     str = str.trim();
     return str.charAt(0).toUpperCase() + str.slice(1);

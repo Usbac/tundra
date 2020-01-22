@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+    <head>
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        {{ msg }}
+
+        {! no_escaped_html !}
+
+        <p>This is a escaped template tag: ~{{ msg }}</p>
+
+        {# Comment that won't appear in the HTML #}
+
+        {% if (true): %}
+            <p>This is inside a Js condition</p>
+        {% end %}
+
+        <p>Using the stdlib:</p>
+        <ul>
+            <li>sum: {{ sum('2.5', 3, 2) }}</li>
+            <li>subtract: {{ subtract('2.5', 3, 2) }}</li>
+            <li>strBefore: {{ strBefore('Lorem ipsum dolor sit', 'ipsum') }}</li>
+            <li>strAfter: {{ strAfter('Lorem ipsum dolor sit', 'ipsum') }}</li>
+            <li>remove: {{ remove('Lorem ipsum dolor sit', 'ipsum') }}</li>
+            <li>titleCase: {{ titleCase('lorem ipsum dolor sit') }}</li>
+            <li>range: {{ range(1, 10) }}</li>
+            <li>join: {{ join(['you', 'me', 'I'], ', ', ' and ') }}</li>
+            <li>round: {{ round(1.446, 2) }}</li>
+        </ul>
+    </body>
+</html>
+
+@require(footer.html)

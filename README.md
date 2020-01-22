@@ -5,7 +5,7 @@
 <h4 align="center">The comprehensive template engine for Nodejs.</h4>
 
 <p align="center">
-<img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.5.0-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
+<img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.6.0-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
 Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework or technology.
@@ -20,7 +20,7 @@ Tundra is a small, fast and customizable template engine for Nodejs. It perfectl
 
 * Customizable syntax.
 
-* Inheritance capabilities
+* Inheritance capabilities.
 
 * And more...
 
@@ -50,7 +50,7 @@ Tundra is a small, fast and customizable template engine for Nodejs. It perfectl
 
 Rendering a simple view
 
-Main.js:
+main.js:
 
 ```js
 var http = require('http');
@@ -69,7 +69,6 @@ http.createServer((req, res) => {
 ```
 
 home.html:
-
 ```html
 <!DOCTYPE html>
     <head>

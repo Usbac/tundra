@@ -60,6 +60,12 @@ var extension = '';
  */
 var base_dir = '';
 
+/**
+ * Use or not the scoping in the views.
+ * @type {bool}
+ */
+var scoping = false;
+
 
 /**
  * Initializes all the regex variables.
@@ -75,7 +81,7 @@ function setRegex()
         'block': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}block( ?){1,}(.*)( ?){1,}(?<=\\]\\})([\\s\\S]*?)(\\{\\[)( ?){1,}endblock( ?){1,}(\\]\\})`),
         'parent': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}parent(.*)(?<=\\]\\})`),
         'extends': new RegExp(`${regex_not_raw}(?=@extends\\()(.*)(?<=\\))`),
-        'require': new RegExp(`${regex_not_raw}(?=@require\()(.*)(?<=\))`),
+        'require': new RegExp(`${regex_not_raw}(?=@require\\()(.*)(?<=\\))`),
         'comment': new RegExp(`${regex_not_raw}(?={#)([\\s\\S]*?)(?<=#})`),
         'print_plain': new RegExp(`${regex_not_raw}(?={!)(.*?)(?<=!})`),
         'print': new RegExp(`${regex_not_raw}(?={{)(.*?)(?<=}})`),
@@ -209,8 +215,10 @@ function getSourceCode(dir, data)
     }
 
     let content = fs.readFileSync(dir, encoding);
-    let func = `with (this) { \n var ${ARRAY} = [];\n`;
+    let func = !scoping ? `with (this)` : '';
+    func += `{ \n var ${ARRAY} = [];\n`;
 
+    // Replace the content of a extended view for it's parent content
     if (regexs.extends.test(content)) {
         let parent_dir = regexs.extends.exec(content)[2];
         content = getInheritCode(parent_dir, content);
@@ -354,6 +362,10 @@ module.exports = class View {
 
         if (options.hasOwnProperty('extension')) {
             this.setExtension(options.extension);
+        }
+
+        if (options.hasOwnProperty('scoping')) {
+            scoping = Boolean(options.scoping);
         }
     }
 
