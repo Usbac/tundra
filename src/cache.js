@@ -85,6 +85,7 @@ module.exports = class Cache {
         }
 
         try {
+            require('./stdlib.js');
             content = new Function(func).apply(data);
         } catch(err) {
             throw new Error(err);
