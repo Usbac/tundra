@@ -8,7 +8,7 @@
 /**
  * Returns the total sum of the given arguments, all of them are treated as
  * numbers.
- * @param {string} args - The argument list.
+ * @param {*} args - The argument list.
  * @returns {string} The sum of all the given arguments.
  */
 sum = (...args) =>
@@ -27,7 +27,7 @@ sum = (...args) =>
 /**
  * Returns the total subtraction of the given arguments, all of them are treated as
  * numbers.
- * @param {string} args - The argument list.
+ * @param {*} args - The argument list.
  * @returns {string} The subtraction of all the given arguments.
  */
 subtract = (...args) =>

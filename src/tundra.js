@@ -344,7 +344,7 @@ module.exports = class View {
     /**
      * Set the options.
      * @param {Object} options - The default options used for the views.
-     * The valid options keys are: 'cache', 'encoding' and 'extesion'
+     * The valid options keys are: 'cache', 'encoding', 'base', 'extesion' and 'scoping'
      */
     setOptions(options)
     {
