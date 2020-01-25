@@ -11,6 +11,8 @@
 
         {# Comment that won't appear in the HTML #}
 
+        <p>View exists: {{ view_exists }}</p>
+
         {% if (true): %}
             <p>This is inside a Js condition</p>
         {% end %}
@@ -30,4 +32,4 @@
     </body>
 </html>
 
-@require(footer.html)
+@require(views/footer.html)

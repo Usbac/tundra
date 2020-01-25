@@ -441,7 +441,11 @@ module.exports = class View {
      */
     exists(dir)
     {
-        return exists(dir);
+        if (extension.length > 0) {
+            dir = `${dir}.${extension}`;
+        }
+
+        return exists(path.join(base_dir, dir));
     }
 
 
