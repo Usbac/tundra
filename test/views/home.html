@@ -1,3 +1,9 @@
+<style>
+td {
+    border: 1px #c1c1c1 solid;
+    padding: 6px 10px;
+}
+</style>
 <!DOCTYPE html>
     <head>
         <title>{{ title }}</title>
@@ -5,31 +11,70 @@
     <body>
         {{ msg }}
 
-        {! no_escaped_html !}
+        <p>{! no_escaped_html !}</p>
 
         <p>This is a escaped template tag: ~{{ msg }}</p>
 
         {# Comment that won't appear in the HTML #}
-
-        <p>View exists: {{ view_exists }}</p>
 
         {% if (true): %}
             <p>This is inside a Js condition</p>
         {% end %}
 
         <p>Using the stdlib:</p>
-        <ul>
-            <li>sum: {{ sum('2.5', 3, 2) }}</li>
-            <li>subtract: {{ subtract('2.5', 3, 2) }}</li>
-            <li>strBefore: {{ strBefore('Lorem ipsum dolor sit', 'ipsum') }}</li>
-            <li>strAfter: {{ strAfter('Lorem ipsum dolor sit', 'ipsum') }}</li>
-            <li>remove: {{ remove('Lorem ipsum dolor sit', 'ipsum') }}</li>
-            <li>titleCase: {{ titleCase('lorem ipsum dolor sit') }}</li>
-            <li>range: {{ range(1, 10) }}</li>
-            <li>join: {{ join(['you', 'me', 'I'], ', ', ' and ') }}</li>
-            <li>round: {{ round(1.446, 2) }}</li>
-        </ul>
+        <table cellspacing="0">
+            <tr>
+                <td><b>Function</b></td>
+                <td><b>Expected value</b></td>
+                <td><b>Result</b></td>
+            </tr>
+            <tr>
+                <td>sum</td>
+                <td>7.5</td>
+                <td>{{ sum('2.5', 3, 2) }}</td>
+            </tr>
+            <tr>
+                <td>subtract</td>
+                <td>-7.5</td>
+                <td>{{ subtract('2.5', 3, 2) }}</td>
+            </tr>
+            <tr>
+                <td>strBefore</td>
+                <td>Lorem </td>
+                <td>{{ strBefore('Lorem ipsum dolor sit', 'ipsum') }}</td>
+            </tr>
+            <tr>
+                <td>strAfter</td>
+                <td> dolor sit</td>
+                <td>{{ strAfter('Lorem ipsum dolor sit', 'ipsum') }}</td>
+            </tr>
+            <tr>
+                <td>remove</td>
+                <td>Lorem dolor sit</td>
+                <td>{{ remove('Lorem ipsum dolor sit', 'ipsum') }}</td>
+            </tr>
+            <tr>
+                <td>titleCase</td>
+                <td>Lorem ipsum dolor sit</td>
+                <td>{{ titleCase('lorem ipsum dolor sit') }}</td>
+            </tr>
+            <tr>
+                <td>range</td>
+                <td>1,2,3,4,5,6,7,8,9,10</td>
+                <td>{{ range(1, 10) }}</td>
+            </tr>
+            <tr>
+                <td>join</td>
+                <td>you, me and I</td>
+                <td>{{ join(['you', 'me', 'I'], ', ', ' and ') }}</td>
+            </tr>
+            <tr>
+                <td>round</td>
+                <td>1.45</td>
+                <td>{{ round(1.446, 2) }}</td>
+            </tr>
+        </table>
     </body>
 </html>
 
-@require(views/footer.html)
+@require(test/views/footer.html)
