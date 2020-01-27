@@ -80,6 +80,18 @@ home.html:
 </html>
 ```
 
+## Tests
+
+To run the test suite, follow these steps:
+
+* Open your terminal and move to your Tundra folder. 
+
+* Run `npm update --save-dev` to install the dependencies.
+
+* Run `npm test`.
+
+* Open `http://localhost:8080` in your browser to see the testing view.
+
 ## Contributing
 
 Any contribution or support to this project in the form of a issue, pull request or message will be highly appreciated.
