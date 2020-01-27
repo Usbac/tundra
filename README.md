@@ -1,14 +1,14 @@
 <h1 align="center">
-  <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra title.svg" alt="Tundra title" height="250">
+  <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra.svg" alt="Tundra title" height="100">
 </h1>
 
-<h4 align="center">The comprehensive template engine for Nodejs.</h4>
+<p align="center">The comprehensive template engine for Nodejs.</p>
 
 <p align="center">
-<img src="https://img.shields.io/badge/stability-experimental-green.svg"> <img src="https://img.shields.io/badge/version-0.7.0-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
+<img src="https://img.shields.io/badge/stability-stable-green.svg"> <img src="https://img.shields.io/badge/version-0.7.0-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
-Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework or technology.
+Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework, even pure Nodejs.
 
 ## Features
 
