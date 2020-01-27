@@ -2,7 +2,7 @@ var http = require('http');
 var assert = require('assert');
 var Tundra = require('../src/tundra.js');
 
-// Test
+// Test general methods
 describe('Tundra', function() {
     let view = new Tundra();
 
@@ -30,6 +30,7 @@ describe('Tundra', function() {
 
 });
 
+// Test view rendering
 http.createServer((req, res) => {
     let view = new Tundra({
         'base': 'test/views',
