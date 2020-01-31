@@ -12,8 +12,7 @@ var cache_dir = "";
  * Makes the given cache directory if it does not exists yet.
  * @param {string} dir - The cache file directory.
  */
-function mkDir(dir)
-{
+function mkDir(dir) {
     try {
         if (!fs.statSync(dir).isDirectory()) {
             fs.mkdirSync(dir, {recursive: true});
@@ -29,8 +28,7 @@ function mkDir(dir)
  * @param {string} dir - The file directory.
  * @returns {string} True if the given file cache exists, false otherwise.
  */
-function exists(dir)
-{
+function exists(dir) {
     try {
         if (fs.statSync(dir).isFile()) {
             return true;
@@ -51,8 +49,7 @@ module.exports = class Cache {
      * @param {string} encoding - The encoding used for the file.
      * @returns {string} The content of a cache file.
      */
-    get(dir, encoding)
-    {
+    get(dir, encoding) {
         dir = path.join(cache_dir, dir);
         let content = false;
 
@@ -75,8 +72,7 @@ module.exports = class Cache {
      * @param {string} encoding - The encoding used for the file.
      * @returns {string} A cache view rendered.
      */
-    getRender(dir, data = {}, encoding)
-    {
+    getRender(dir, data = {}, encoding) {
         let func = this.get(dir, encoding),
             content = "";
 
@@ -100,8 +96,7 @@ module.exports = class Cache {
      * @param {string} dir - The cache file directory.
      * @param {string} content - The content to copy to the file.
      */
-    write(dir, content)
-    {
+    write(dir, content) {
         dir = path.join(cache_dir, dir);
 
         if (exists(dir)) {
@@ -123,8 +118,7 @@ module.exports = class Cache {
      * @param {string} dir - The file directory.
      * @returns {string} True if the given file cache exists, false otherwise.
      */
-    exists(dir)
-    {
+    exists(dir) {
         return exists(path.join(cache_dir, dir));
     }
 
@@ -133,8 +127,7 @@ module.exports = class Cache {
      * Sets the cache directory used for the views.
      * @param {string} dir - The new cache directory.
      */
-    setDir(dir)
-    {
+    setDir(dir) {
         cache_dir = dir;
     }
 
@@ -143,8 +136,7 @@ module.exports = class Cache {
      * Returns the cache directory used for the views.
      * @returns {string} The cache directory.
      */
-    getDir()
-    {
+    getDir() {
         return cache_dir;
     }
 
@@ -153,8 +145,7 @@ module.exports = class Cache {
      * Returns true if the cache is active, false otherwise.
      * @returns {string} True if the cache is active, false otherwise.
      */
-    isActive()
-    {
+    isActive() {
         return cache_dir.length > 0;
     }
 

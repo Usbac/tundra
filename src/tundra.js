@@ -70,8 +70,7 @@ var scoping = false;
 /**
  * Initializes all the regex variables.
  */
-function setRegex()
-{
+function setRegex() {
     regexs = {};
     regex_raw = '~';
     regex_not_raw = `(?<!${regex_raw})`;
@@ -99,8 +98,7 @@ function setRegex()
  * Sets the regexs array values equal to lookaround_regex array values
  * without zero-length assertions (lookarounds).
  */
-function UpdateNormalRegex()
-{
+function UpdateNormalRegex() {
     Object.keys(lookaround_regexs).forEach(key => {
         regexs[key] = noLookarounds(lookaround_regexs[key]);
     });
@@ -113,8 +111,7 @@ function UpdateNormalRegex()
  * @param {string} regex - The regular expression.
  * @returns {string} The given regex without zero-length assertions.
  */
-function noLookarounds(regex)
-{
+function noLookarounds(regex) {
     return new RegExp(regex.source.replace(/(\?\=|\?\<\=)/gm, ''));
 }
 
@@ -123,8 +120,7 @@ function noLookarounds(regex)
  * Initializes the general regex based on the other
  * existing regex variables.
  */
-function updateGeneralRegex()
-{
+function updateGeneralRegex() {
     general_regex = new RegExp(
         lookaround_regexs.require.source + '|' +
         lookaround_regexs.comment.source + '|' +
@@ -140,8 +136,7 @@ function updateGeneralRegex()
  * @param {Object} [data] - The content used for the view.
  * @returns {string} The function partial source code of the given element.
  */
-function getCode(element, data = {})
-{
+function getCode(element, data = {}) {
     switch(true) {
         //Require
         case regexs.require.test(element):
@@ -182,8 +177,7 @@ function getCode(element, data = {})
  * @param {Object} [data] - The content used for the view.
  * @returns {string} A view rendered.
  */
-function getRender(dir, data = {})
-{
+function getRender(dir, data = {}) {
     let func = getSourceCode(dir, data),
         content = "";
 
@@ -208,8 +202,7 @@ function getRender(dir, data = {})
  * @param {Object} data - The content used for the view.
  * @returns {string} The generated function source code of the given view file.
  */
-function getSourceCode(dir, data)
-{
+function getSourceCode(dir, data) {
     if (!exists(dir)) {
         return false;
     }
@@ -241,8 +234,7 @@ function getSourceCode(dir, data)
  * @param {string} parent_dir - The parent file path.
  * @param {string} content - The child view content.
  */
-function getInheritCode(parent_dir, content)
-{
+function getInheritCode(parent_dir, content) {
     if (!exists(parent_dir)) {
         return false;
     }
@@ -276,8 +268,7 @@ function getInheritCode(parent_dir, content)
  * @param {bool} log - Log errors or not if the block isn't found.
  * @returns {string} The content inside the block.
  */
-function getBlock(content, block_name, log = false)
-{
+function getBlock(content, block_name, log = false) {
     let block_regex = new RegExp(regexs.block.source.replace('(.*)', block_name));
     let block_content;
 
@@ -298,8 +289,7 @@ function getBlock(content, block_name, log = false)
  * @param {string} str - The string.
  * @returns {string} The given string without the raw tags.
  */
-function removeRaw(str)
-{
+function removeRaw(str) {
     Object.keys(lookaround_regexs).forEach(key => {
         let regex = `${regex_raw}(${ lookaround_regexs[key].source.replace(regex_not_raw, '') })`;
         str = str.replace(new RegExp(regex), '$1');
@@ -314,8 +304,7 @@ function removeRaw(str)
  * @param {string} str - The file directory.
  * @returns {string} True if the given file exists, false otherwise.
  */
-function exists(dir)
-{
+function exists(dir) {
     try {
         if (fs.lstatSync(dir).isFile()) {
             return true;
@@ -335,8 +324,7 @@ module.exports = class View {
      * @param {Object} [options] - The default options used for the views.
      * The valid options keys are: 'cache', 'encoding' and 'extesion'
      */
-    constructor(options = {})
-    {
+    constructor(options = {}) {
         this.setOptions(options);
     }
 
@@ -346,8 +334,7 @@ module.exports = class View {
      * @param {Object} options - The default options used for the views.
      * The valid options keys are: 'cache', 'encoding', 'base', 'extesion' and 'scoping'
      */
-    setOptions(options)
-    {
+    setOptions(options) {
         if (options.hasOwnProperty('cache')) {
             cache.setDir(options.cache);
         }
@@ -376,8 +363,7 @@ module.exports = class View {
      * @param {Object} [data] - The content used for the view.
      * @returns {string} A view rendered.
      */
-    getRender(dir, data = {})
-    {
+    getRender(dir, data = {}) {
         if (typeof general_regex == 'undefined') {
             setRegex();
         }
@@ -421,8 +407,7 @@ module.exports = class View {
      * @param {Object} [data] - The content used for the view.
      * @returns {bool} True if the view has been rendered, false otherwise.
      */
-    render(res, dir, data = {})
-    {
+    render(res, dir, data = {}) {
         let content = this.getRender(dir, data);
 
         if (content !== false) {
@@ -439,8 +424,7 @@ module.exports = class View {
      * @param {string} dir - The file directory.
      * @returns {string} True if the given file exists, false otherwise.
      */
-    exists(dir)
-    {
+    exists(dir) {
         if (extension.length > 0) {
             dir = `${dir}.${extension}`;
         }
@@ -458,8 +442,7 @@ module.exports = class View {
      * @param {string} [last_val] - The last (right) value of the tag.
      * @returns {string} True in case of success, false otherwise.
      */
-    set(key, first_val, last_val = '')
-    {
+    set(key, first_val, last_val = '') {
         if (typeof general_regex == 'undefined') {
             setRegex();
         }
@@ -496,8 +479,7 @@ module.exports = class View {
      * Sets the file encoding used for the views.
      * @param {string} [new_encoding] - The new file encoding.
      */
-    setEncoding(new_encoding = DEFAULT_ENCODING)
-    {
+    setEncoding(new_encoding = DEFAULT_ENCODING) {
         encoding = new_encoding;
     }
 
@@ -506,8 +488,7 @@ module.exports = class View {
      * Returns the file encoding used for the views.
      * @returns {string} The file encoding.
      */
-    getEncoding()
-    {
+    getEncoding() {
         return encoding;
     }
 
@@ -516,8 +497,7 @@ module.exports = class View {
      * Sets the base directory for the views.
      * @param {string} [dir] - The new base directory.
      */
-    setBase(dir = '')
-    {
+    setBase(dir = '') {
         base_dir = dir;
     }
 
@@ -526,8 +506,7 @@ module.exports = class View {
      * Returns the base directory for the views.
      * @returns {string} The base directory.
      */
-    getBase()
-    {
+    getBase() {
         return base_dir;
     }
 
@@ -536,8 +515,7 @@ module.exports = class View {
      * Sets the file extension used for the views.
      * @param {string} [new_extension] - The new file extension.
      */
-    setExtension(new_extension = '')
-    {
+    setExtension(new_extension = '') {
         extension = new_extension;
     }
 
@@ -546,8 +524,7 @@ module.exports = class View {
      * Returns the file extension used for the views.
      * @returns {string} The file extension.
      */
-    getExtension()
-    {
+    getExtension() {
         return extension;
     }
 

@@ -11,8 +11,7 @@
  * @param {*} args - The argument list.
  * @returns {string} The sum of all the given arguments.
  */
-sum = (...args) =>
-{
+sum = (...args) => {
     let result = 0;
     let i;
 
@@ -30,8 +29,7 @@ sum = (...args) =>
  * @param {*} args - The argument list.
  * @returns {string} The subtraction of all the given arguments.
  */
-subtract = (...args) =>
-{
+subtract = (...args) => {
     let result = 0;
     let i;
 
@@ -50,8 +48,7 @@ subtract = (...args) =>
  * @returns {string} the given string with the HTML tags escaped.
  * Those are: '&', '"', '<' and '>'.
  */
-escape = (str) =>
-{
+escape = (str) => {
     return str.toString().replace(/&/g, '&amp;')
                          .replace(/"/g, '&quot;')
                          .replace(/</g, '&lt;')
@@ -65,8 +62,7 @@ escape = (str) =>
  * @param {string} subtr - The substring used to cut the main.
  * @returns {string} Everything before the specified substring.
  */
-strBefore = (str, substr) =>
-{
+strBefore = (str, substr) => {
     return str.substring(0, str.lastIndexOf(substr));
 }
 
@@ -77,8 +73,7 @@ strBefore = (str, substr) =>
  * @param {string} subtr - The substring used to cut the main.
  * @returns {string} Everything after the specified substring.
  */
-strAfter = (str, substr) =>
-{
+strAfter = (str, substr) => {
     return str.substring(str.lastIndexOf(substr) + substr.length);
 }
 
@@ -89,8 +84,7 @@ strAfter = (str, substr) =>
  * @param {string} subtr - The substring that will be removed.
  * @returns {string} The main string with the given substring removed.
  */
-remove = (str, substr) =>
-{
+remove = (str, substr) => {
     return str.replace(new RegExp(substr, 'g'), '');
 }
 
@@ -101,8 +95,7 @@ remove = (str, substr) =>
  * @param {string} route - The route.
  * @returns {string} The local url.
  */
-url = (req, route) =>
-{
+url = (req, route) => {
     if (route.charAt(0) !== '/') {
         route = '/' + route;
     }
@@ -123,8 +116,7 @@ url = (req, route) =>
  * @returns {string} The given string with the whitespaces removed from both sides of it
  * and its first letter uppercase.
  */
-titleCase = (str) =>
-{
+titleCase = (str) => {
     str = str.trim();
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -135,8 +127,7 @@ titleCase = (str) =>
  * @param {string} str - The string.
  * @returns {string} The given string with all its words starting with uppercase letters.
  */
-capitalize = (str) =>
-{
+capitalize = (str) => {
     let arr = str.split(' ');
 
     arr.forEach((e, index) => {
@@ -154,8 +145,7 @@ capitalize = (str) =>
  * @param {Number} steps - The increase steps.
  * @returns {array} An array containing the numbers from the specified start to the specified end.
  */
-range = (start, end, steps = 1) =>
-{
+range = (start, end, steps = 1) => {
     if (start > end) {
         return [];
     }
@@ -186,8 +176,7 @@ range = (start, end, steps = 1) =>
  * @param {string} last_glue - The glue between the last two elements.
  * @returns {string} The given array as a string joined by the given glues.
  */
-join = (arr, glue, last_glue = '') =>
-{
+join = (arr, glue, last_glue = '') => {
     if (arr.length <= 1) {
         return arr.toString();
     }
@@ -209,7 +198,6 @@ join = (arr, glue, last_glue = '') =>
  * @param {Number} [decimals] - The decimal places to round.
  * @returns {Number} The given value as number and rounded to the specified decimals.
  */
-round = (number, decimals = 2) =>
-{
+round = (number, decimals = 2) => {
     return parseFloat((+number).toFixed(decimals));
 }
