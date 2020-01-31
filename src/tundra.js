@@ -14,25 +14,25 @@ const ERROR_BLOCK = `${ERROR_PREFIX} No parent block found with the name`;
  * The raw regex used to escape the rest of the tags.
  * @type {string}
  */
-var regex_raw;
+let regex_raw;
 
 /**
  * The negation of the raw regex.
  * @type {string}
  */
-var regex_not_raw;
+let regex_not_raw;
 
 /**
  * List of the existing regexs.
  * @type {Object}
  */
-var regexs;
+let regexs;
 
 /**
  * List of the existing regexs with lookarounds.
  * @type {Object}
  */
-var lookaround_regexs;
+let lookaround_regexs;
 
 /**
  * The general regex which matches most  of the existing regexs.
@@ -40,31 +40,31 @@ var lookaround_regexs;
  * over its matches.
  * @type {RegExp}
  */
-var general_regex;
+let general_regex;
 
 /**
  * The encoding for files.
  * @type {string}
  */
-var encoding = DEFAULT_ENCODING;
+let encoding = DEFAULT_ENCODING;
 
 /**
  * The file views extension.
  * @type {string}
  */
-var extension = '';
+let extension = '';
 
 /**
  * The base directory for the views.
  * @type {string}
  */
-var base_dir = '';
+let base_dir = '';
 
 /**
  * Use or not the scoping in the views.
  * @type {bool}
  */
-var scoping = false;
+let scoping = false;
 
 
 /**
@@ -209,7 +209,7 @@ function getSourceCode(dir, data) {
 
     let content = fs.readFileSync(dir, encoding);
     let func = !scoping ? `with (this)` : '';
-    func += `{ \n var ${ARRAY} = [];\n`;
+    func += `{ \n let ${ARRAY} = [];\n`;
 
     // Replace the content of a extended view for it's parent content
     if (regexs.extends.test(content)) {
@@ -392,7 +392,7 @@ module.exports = class View {
             dir = `${dir}.${extension}`;
         }
 
-        var complete_dir = path.join(base_dir, dir);
+        let complete_dir = path.join(base_dir, dir);
 
         //Without cache
         if (!cache.isActive()) {

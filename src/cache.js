@@ -5,7 +5,7 @@ const path = require('path');
  * The cache directory.
  * @type {string}
  */
-var cache_dir = "";
+let cache_dir = "";
 
 
 /**

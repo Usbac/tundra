@@ -40,6 +40,7 @@ describe('Tundra', function() {
 // Test view rendering
 http.createServer((req, res) => {
     let view = new Tundra({
+        'cache': 'test/cache',
         'base': 'test/views',
         'extension': 'html'
     });
