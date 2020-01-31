@@ -358,6 +358,26 @@ module.exports = class View {
 
 
     /**
+     * Map some of the general methods into the response.
+     * @param {ServerResponse} res - The connection response.
+     * @param {Object} [config] - The default options used for the views.
+     */
+    mapResponse(res) {
+        res.render = (dir, data) => {
+            return this.render(res, dir, data);
+        };
+
+        res.getRender = (dir, data) => {
+            return this.getRender(dir, data);
+        };
+
+        res.exists = (dir) => {
+            return this.exists(dir);
+        };
+    }
+
+
+    /**
      * Returns a view rendered.
      * @param {string} dir - The file path.
      * @param {Object} [data] - The content used for the view.

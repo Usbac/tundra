@@ -28,6 +28,13 @@ describe('Tundra', function() {
         assert.equal(true, view.exists('home'));
     });
 
+    it('Methods should be correctly mapped into the response through mapResponse()', function() {
+        let res = {};
+        view.mapResponse(res);
+        assert.equal(true, typeof res.render === 'function');
+        assert.equal(true, typeof res.getRender === 'function');
+        assert.equal(true, typeof res.exists === 'function');
+    });
 });
 
 // Test view rendering
