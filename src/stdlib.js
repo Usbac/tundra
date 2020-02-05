@@ -13,9 +13,8 @@
  */
 sum = (...args) => {
     let result = 0;
-    let i;
 
-    for (i = 0; i < args.length; i++) {
+    for (let i = 0; i < args.length; i++) {
         result += parseFloat(args[i]);
     }
 

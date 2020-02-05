@@ -137,37 +137,49 @@ function updateGeneralRegex() {
  * @returns {string} The function partial source code of the given element.
  */
 function getCode(element, data = {}) {
-    switch(true) {
-        //Require
-        case regexs.require.test(element):
-            let dir = element.replace(regexs.require, "$2");
-            if (!exists(dir)) {
-                console.log(`${ERROR_NOT_FOUND} (${dir})`);
-                return '';
-            }
-
-            return `${ARRAY}.push(\`${getRender(dir, data)}\`);`;
-        case regexs.comment.test(element):
+    //Require
+    if (regexs.require.test(element)) {
+        let dir = element.replace(regexs.require, "$2");
+        if (!exists(dir)) {
+            console.log(`${ERROR_NOT_FOUND} (${dir})`);
             return '';
-        //Begin code block
-        case regexs.code_begin.test(element):
-            return `${element.replace(regexs.code_begin, '$2 {')}`;
-        //End code block
-        case regexs.code_end.test(element):
-            return "}";
-        //Code
-        case regexs.code.test(element):
-            return `${element.replace(regexs.code, '$2')}`;
-        //Print
-        case regexs.print.test(element):
-            return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));`;
-        //Print plain
-        case regexs.print_plain.test(element):
-            return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});`;
-        //Text
-        default:
-            return `${ARRAY}.push(\`${element}\`);`;
+        }
+
+        return `${ARRAY}.push(\`${getRender(dir, data)}\`);`;
     }
+
+    //Comment
+    if (regexs.comment.test(element)) {
+        return '';
+    }
+
+    //Begin code block
+    if (regexs.code_begin.test(element)) {
+        return `${element.replace(regexs.code_begin, '$2 {')}`;
+    }
+
+    //End code block
+    if (regexs.code_end.test(element)) {
+        return "}";
+    }
+
+    //Code
+    if (regexs.code.test(element)) {
+        return `${element.replace(regexs.code, '$2')}`;
+    }
+
+    //Print
+    if (regexs.print.test(element)) {
+        return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));`;
+    }
+
+    //Print plain
+    if (regexs.print_plain.test(element)) {
+        return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});`;
+    }
+
+    //Text
+    return `${ARRAY}.push(\`${element}\`);`;
 }
 
 
@@ -211,7 +223,7 @@ function getSourceCode(dir, data) {
     let func = !scoping ? `with (this)` : '';
     func += `{ \n let ${ARRAY} = [];\n`;
 
-    // Replace the content of a extended view for it's parent content
+    // Replace the content of a extended view by its parent content
     if (regexs.extends.test(content)) {
         let parent_dir = regexs.extends.exec(content)[2];
         content = getInheritCode(parent_dir, content);
@@ -322,7 +334,7 @@ module.exports = class View {
     /**
      * @constructs
      * @param {Object} [options] - The default options used for the views.
-     * The valid options keys are: 'cache', 'encoding' and 'extesion'
+     * The valid options keys are: 'cache', 'encoding' and 'extesion'.
      */
     constructor(options = {}) {
         this.setOptions(options);
@@ -332,7 +344,7 @@ module.exports = class View {
     /**
      * Set the options.
      * @param {Object} options - The default options used for the views.
-     * The valid options keys are: 'cache', 'encoding', 'base', 'extesion' and 'scoping'
+     * The valid options keys are: 'cache', 'encoding', 'base', 'extesion' and 'scoping'.
      */
     setOptions(options) {
         if (options.hasOwnProperty('cache')) {
@@ -378,10 +390,10 @@ module.exports = class View {
 
 
     /**
-     * Returns a view rendered.
+     * Returns the content of a rendered view.
      * @param {string} dir - The file path.
      * @param {Object} [data] - The content used for the view.
-     * @returns {string} A view rendered.
+     * @returns {string} The content of a rendered view.
      */
     getRender(dir, data = {}) {
         if (typeof general_regex == 'undefined') {
