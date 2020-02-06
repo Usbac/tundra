@@ -227,11 +227,16 @@ function getSourceCode(dir, data) {
     if (regexs.extends.test(content)) {
         let parent_dir = regexs.extends.exec(content)[2];
         content = getInheritCode(parent_dir, content);
+        if (!content) {
+            console.log(`${ERROR_NOT_FOUND} (${parent_dir})`);
+        }
     }
 
-    content.split(general_regex).filter(e => e).forEach(e => {
-        func += `${getCode(e, data)}\n`;
-    });
+    if (typeof content === 'string') {
+        content.split(general_regex).filter(e => e).forEach(e => {
+            func += `${getCode(e, data)}\n`;
+        });
+    }
 
     func = removeRaw(func);
     func += `return ${ARRAY}.join(''); \n }`;
@@ -318,14 +323,10 @@ function removeRaw(str) {
  */
 function exists(dir) {
     try {
-        if (fs.lstatSync(dir).isFile()) {
-            return true;
-        }
+        return fs.lstatSync(dir).isFile();
     } catch(err) {
         return false;
     }
-
-    return false;
 }
 
 

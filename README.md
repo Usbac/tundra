@@ -5,7 +5,7 @@
 <p align="center">The comprehensive template engine for Nodejs.</p>
 
 <p align="center">
-<img src="https://img.shields.io/badge/stability-stable-green.svg"> <img src="https://img.shields.io/badge/version-0.8.2-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
+<img src="https://img.shields.io/badge/stability-stable-green.svg"> <img src="https://img.shields.io/badge/version-0.8.3-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
 Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework, even pure Nodejs.

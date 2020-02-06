@@ -9,8 +9,8 @@ let cache_dir = "";
 
 
 /**
- * Makes the given cache directory if it does not exists yet.
- * @param {string} dir - The cache file directory.
+ * Makes the given directory if it does not exists yet.
+ * @param {string} dir - The directory.
  */
 function mkDir(dir) {
     try {
@@ -30,14 +30,10 @@ function mkDir(dir) {
  */
 function exists(dir) {
     try {
-        if (fs.statSync(dir).isFile()) {
-            return true;
-        }
+        return fs.statSync(dir).isFile();
     } catch(err) {
         return false;
     }
-
-    return false;
 }
 
 
@@ -105,11 +101,8 @@ module.exports = class Cache {
 
         mkDir(path.dirname(dir));
 
-        fs.writeFileSync(dir, content, err => {
-            if (err && err.code !== 'EEXIST') {
-                throw new Error(`Error creating the '${dir}' cache file (${err})`);
-            }
-        });
+        //The file is created if it doesn't exists or ignored if it does.
+        fs.writeFileSync(dir, content, { flag: 'wx'});
     }
 
 

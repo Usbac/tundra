@@ -53,5 +53,6 @@ http.createServer((req, res) => {
     };
 
     view.render(res, 'home', data);
+    view.render(res, 'child');
     res.end();
 }).listen(8080);
