@@ -139,7 +139,7 @@ function updateGeneralRegex() {
 function getCode(element, data = {}) {
     //Require
     if (regexs.require.test(element)) {
-        let dir = element.replace(regexs.require, "$2");
+        let dir = element.replace(regexs.require, '$2');
         if (!exists(dir)) {
             console.log(`${ERROR_NOT_FOUND} (${dir})`);
             return '';
@@ -160,7 +160,7 @@ function getCode(element, data = {}) {
 
     //End code block
     if (regexs.code_end.test(element)) {
-        return "}";
+        return '}';
     }
 
     //Code
@@ -191,7 +191,7 @@ function getCode(element, data = {}) {
  */
 function getRender(dir, data = {}) {
     let func = getSourceCode(dir, data),
-        content = "";
+        content = '';
 
     if (func === false) {
         return false;
@@ -262,7 +262,7 @@ function getInheritCode(parent_dir, content) {
     let parent_regex = new RegExp(regexs.parent.source, 'gm');
 
     content = content.replace(parent_regex, e => {
-        let block_name = e.replace(parent_regex, "$3").trim();
+        let block_name = e.replace(parent_regex, '$3').trim();
         return getBlock(parent_content, block_name, true);
     });
 
@@ -270,7 +270,7 @@ function getInheritCode(parent_dir, content) {
     let block_regex = new RegExp(regexs.block.source, 'gm');
 
     parent_content = parent_content.replace(block_regex, e => {
-        let block_name = e.replace(block_regex, "$4").trim();
+        let block_name = e.replace(block_regex, '$4').trim();
         return getBlock(content, block_name);
     });
 
@@ -349,7 +349,7 @@ module.exports = class View {
      */
     setOptions(options) {
         if (options.hasOwnProperty('cache')) {
-            cache.setDir(options.cache);
+            cache.setActive(options.cache);
         }
 
         if (options.hasOwnProperty('encoding')) {
@@ -417,19 +417,17 @@ module.exports = class View {
             return getRender(complete_dir, data);
         }
 
-        let cache_exists = cache.exists(dir);
-
         //With cache
-        if (!cache_exists) {
+        if (!cache.exists(dir)) {
             if (!exists(complete_dir)) {
                 console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
                 return false;
             }
 
-            cache.write(dir, getSourceCode(complete_dir, data));
+            cache.set(dir, getSourceCode(complete_dir, data));
         }
 
-        return cache.getRender(dir, data, encoding);
+        return cache.get(dir, data);
     }
 
 

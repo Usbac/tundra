@@ -41,11 +41,21 @@ subtract = (...args) => {
 
 
 /**
+ * Returns the average number of the giving array.
+ * @param {array} numbers - The array with the numeric values.
+ * @param {Number} [decimals] - The decimal places to round.
+ * @returns {Number} The average number of the giving array.
+ */
+average = (numbers, decimals = 2) => {
+    return (numbers.reduce((a, b) => a + b, 0) / numbers.length).toFixed(decimals);
+}
+
+
+/**
  * Returns the given string with the HTML tags escaped.
  * Those are: '&', '"', '<' and '>'.
  * @param {string} str - The string.
  * @returns {string} the given string with the HTML tags escaped.
- * Those are: '&', '"', '<' and '>'.
  */
 escape = (str) => {
     return str.toString().replace(/&/g, '&amp;')
@@ -104,7 +114,7 @@ url = (req, route) => {
         protocol = 'https';
     }
 
-    return protocol + "://" + req.headers.host + route;
+    return protocol + '://' + req.headers.host + route;
 }
 
 

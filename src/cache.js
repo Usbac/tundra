@@ -1,145 +1,77 @@
-const fs = require('fs');
-const path = require('path');
+/**
+ * The cache status.
+ * @type {bool}
+ */
+let active = true;
 
 /**
- * The cache directory.
- * @type {string}
+ * The cache views.
+ * @type {Object}
  */
-let cache_dir = "";
-
-
-/**
- * Makes the given directory if it does not exists yet.
- * @param {string} dir - The directory.
- */
-function mkDir(dir) {
-    try {
-        if (!fs.statSync(dir).isDirectory()) {
-            fs.mkdirSync(dir, {recursive: true});
-        }
-    } catch(err) {
-        fs.mkdirSync(dir, {recursive: true});
-    }
-}
-
-
-/**
- * Returns true if the given file cache exists, false otherwise.
- * @param {string} dir - The file directory.
- * @returns {string} True if the given file cache exists, false otherwise.
- */
-function exists(dir) {
-    try {
-        return fs.statSync(dir).isFile();
-    } catch(err) {
-        return false;
-    }
-}
+let cache = {};
 
 
 module.exports = class Cache {
 
-    /**
-     * Returns the content of a cache file.
-     * @param {string} dir - The file path.
-     * @param {string} encoding - The encoding used for the file.
-     * @returns {string} The content of a cache file.
-     */
-    get(dir, encoding) {
-        dir = path.join(cache_dir, dir);
-        let content = false;
-
-        if (exists(dir)) {
-            try {
-                content = fs.readFileSync(dir, encoding);
-            } catch(err) {
-                throw new Error(err);
-            }
-        }
-
-        return content;
-    }
-
 
     /**
      * Returns a cache view rendered.
-     * @param {string} dir - The file path.
+     * @param {string} key - The cache key.
      * @param {Object} [data] - The content used for the view.
-     * @param {string} encoding - The encoding used for the file.
      * @returns {string} A cache view rendered.
      */
-    getRender(dir, data = {}, encoding) {
-        let func = this.get(dir, encoding),
-            content = "";
-
-        if (func === false) {
+    get(key, data = {}) {
+        if (!cache.hasOwnProperty(key)) {
             return false;
         }
 
         try {
             require('./stdlib.js');
-            content = new Function(func).apply(data);
+            return new Function(cache[key]).apply(data);
         } catch(err) {
             throw new Error(err);
         }
-
-        return content;
     }
 
 
     /**
-     * Creates a cache file only if it doesn't exists yet.
-     * @param {string} dir - The cache file directory.
-     * @param {string} content - The content to copy to the file.
+     * Save a cache only if it doesn't exists yet.
+     * @param {string} key - The cache key.
+     * @param {string} content - The cache content.
      */
-    write(dir, content) {
-        dir = path.join(cache_dir, dir);
-
-        if (exists(dir)) {
-            return;
+    set(key, content) {
+        if (!cache.hasOwnProperty(key)) {
+            cache[key] = content;
         }
-
-        mkDir(path.dirname(dir));
-
-        //The file is created if it doesn't exists or ignored if it does.
-        fs.writeFileSync(dir, content, { flag: 'wx'});
     }
 
 
     /**
-     * Returns true if the given file cache exists, false otherwise.
-     * @param {string} dir - The file directory.
-     * @returns {string} True if the given file cache exists, false otherwise.
+     * Returns true if the given cache exists, false otherwise.
+     * @param {string} key - The cache key.
+     * @returns {bool} True if the given cache exists, false otherwise.
      */
-    exists(dir) {
-        return exists(path.join(cache_dir, dir));
+    exists(key) {
+        return cache.hasOwnProperty(key);
     }
 
 
     /**
-     * Sets the cache directory used for the views.
-     * @param {string} dir - The new cache directory.
+     * Sets the cache status.
+     * True for enabling it, false for disabling it
+     * @param {bool} status - The cache status.
      */
-    setDir(dir) {
-        cache_dir = dir;
-    }
-
-
-    /**
-     * Returns the cache directory used for the views.
-     * @returns {string} The cache directory.
-     */
-    getDir() {
-        return cache_dir;
+    setActive(status) {
+        active = status;
     }
 
 
     /**
      * Returns true if the cache is active, false otherwise.
-     * @returns {string} True if the cache is active, false otherwise.
+     * @returns {bool} True if the cache is active, false otherwise.
      */
     isActive() {
-        return cache_dir.length > 0;
+        return active;
     }
 
 }

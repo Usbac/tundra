@@ -4,7 +4,11 @@ var Tundra = require('../src/tundra.js');
 
 // Test general methods
 describe('Tundra', function() {
-    let view = new Tundra();
+    let Cache = require('../src/cache.js');
+    let cache = new Cache();
+    let view = new Tundra({
+        'cache': true
+    });
 
     it('getBase() should return the previously set base value through setBase()', function() {
         let actual = 'test/views';
@@ -25,22 +29,37 @@ describe('Tundra', function() {
     });
 
     it('exists() should return true when a view exists (\'home\')', function() {
-        assert.equal(true, view.exists('home'));
+        assert.ok(view.exists('home'));
+    });
+
+    it('cache.get() should return its corresponding content', function() {
+        cache.set('sub/home', `with (this) {
+            let arr = [];
+            arr.push('<p>Hello world</p>');
+            return arr.join('');
+        }`);
+
+        assert.equal(cache.get('sub/home'), '<p>Hello world</p>');
+    });
+
+    it('cache.exists() should return true when a cache exists', function() {
+        cache.set('blog/post', '{}');
+        assert.ok(cache.exists('blog/post'));
     });
 
     it('Methods should be correctly mapped into the response through mapResponse()', function() {
         let res = {};
         view.mapResponse(res);
-        assert.equal(true, typeof res.render === 'function');
-        assert.equal(true, typeof res.getRender === 'function');
-        assert.equal(true, typeof res.exists === 'function');
+        assert.ok(typeof res.render === 'function');
+        assert.ok(typeof res.getRender === 'function');
+        assert.ok(typeof res.exists === 'function');
     });
 });
 
 // Test view rendering
 http.createServer((req, res) => {
     let view = new Tundra({
-        'cache': 'test/cache',
+        'cache': true,
         'base': 'test/views',
         'extension': 'html'
     });
