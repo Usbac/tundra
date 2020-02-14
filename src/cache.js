@@ -1,17 +1,18 @@
 /**
- * The cache status.
- * @type {bool}
- */
-let active = true;
-
-/**
  * The cache views.
- * @type {Object}
+ * @type {Map}
  */
-let cache = {};
+let cache = new Map();
 
 
 module.exports = class Cache {
+
+    /**
+     * Default constructor initializing the active status.
+     */
+    constructor() {
+        this.active = false;
+    }
 
 
     /**
@@ -21,13 +22,13 @@ module.exports = class Cache {
      * @returns {string} A cache view rendered.
      */
     get(key, data = {}) {
-        if (!cache.hasOwnProperty(key)) {
+        if (!cache.has(key)) {
             return false;
         }
 
         try {
             require('./stdlib.js');
-            return new Function(cache[key]).apply(data);
+            return new Function(cache.get(key)).apply(data);
         } catch(err) {
             throw new Error(err);
         }
@@ -40,8 +41,8 @@ module.exports = class Cache {
      * @param {string} content - The cache content.
      */
     set(key, content) {
-        if (!cache.hasOwnProperty(key)) {
-            cache[key] = content;
+        if (!cache.has(key)) {
+            cache.set(key, content);
         }
     }
 
@@ -51,27 +52,8 @@ module.exports = class Cache {
      * @param {string} key - The cache key.
      * @returns {bool} True if the given cache exists, false otherwise.
      */
-    exists(key) {
-        return cache.hasOwnProperty(key);
-    }
-
-
-    /**
-     * Sets the cache status.
-     * True for enabling it, false for disabling it
-     * @param {bool} status - The cache status.
-     */
-    setActive(status) {
-        active = status;
-    }
-
-
-    /**
-     * Returns true if the cache is active, false otherwise.
-     * @returns {bool} True if the cache is active, false otherwise.
-     */
-    isActive() {
-        return active;
+    has(key) {
+        return cache.has(key);
     }
 
 }

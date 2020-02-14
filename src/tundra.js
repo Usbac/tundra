@@ -349,7 +349,7 @@ module.exports = class View {
      */
     setOptions(options) {
         if (options.hasOwnProperty('cache')) {
-            cache.setActive(options.cache);
+            cache.active = options.cache;
         }
 
         if (options.hasOwnProperty('encoding')) {
@@ -408,7 +408,7 @@ module.exports = class View {
         let complete_dir = path.join(base_dir, dir);
 
         //Without cache
-        if (!cache.isActive()) {
+        if (!cache.active) {
             if (!exists(complete_dir)) {
                 console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
                 return false;
@@ -418,7 +418,7 @@ module.exports = class View {
         }
 
         //With cache
-        if (!cache.exists(dir)) {
+        if (!cache.has(dir)) {
             if (!exists(complete_dir)) {
                 console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
                 return false;

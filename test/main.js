@@ -1,10 +1,10 @@
-var http = require('http');
-var assert = require('assert');
-var Tundra = require('../src/tundra.js');
+const http = require('http');
+const assert = require('assert');
+const Tundra = require('../src/tundra.js');
+const Cache = require('../src/cache.js');
 
 // Test general methods
 describe('Tundra', function() {
-    let Cache = require('../src/cache.js');
     let cache = new Cache();
     let view = new Tundra({
         'cache': true
@@ -42,9 +42,9 @@ describe('Tundra', function() {
         assert.equal(cache.get('sub/home'), '<p>Hello world</p>');
     });
 
-    it('cache.exists() should return true when a cache exists', function() {
+    it('cache.has() should return true when a cache exists', function() {
         cache.set('blog/post', '{}');
-        assert.ok(cache.exists('blog/post'));
+        assert.ok(cache.has('blog/post'));
     });
 
     it('Methods should be correctly mapped into the response through mapResponse()', function() {
