@@ -5,7 +5,10 @@
 <p align="center">The comprehensive template engine for Nodejs.</p>
 
 <p align="center">
-<img src="https://img.shields.io/badge/stability-stable-green.svg"> <img src="https://img.shields.io/badge/version-0.9.0-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-orange.svg">
+    <img src="https://img.shields.io/badge/stability-stable-green.svg">
+    <img src="https://img.shields.io/badge/coverage-100%25-green">
+    <img src="https://img.shields.io/badge/version-0.9.0-blue.svg">
+    <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
 Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework, even pure Nodejs.
@@ -48,7 +51,7 @@ Tundra is a small, fast and customizable template engine for Nodejs. It perfectl
 
 ## Example
 
-Rendering a simple view
+Rendering a view is this simple:
 
 main.js:
 
@@ -84,13 +87,11 @@ home.html:
 
 To run the test suite, follow these steps:
 
-* Open your terminal and move to your Tundra folder.
+1. Open your terminal and move to your Tundra folder.
 
-* Run `npm update --save-dev` to install the dependencies.
+2. Run `npm update --save-dev` to install the dependencies.
 
-* Run `npm test`.
-
-* Open `http://localhost:8080` in your browser to see the testing view.
+3. Run `npm test`.
 
 ## Contributing
 
