@@ -4,7 +4,7 @@ const Cache = require('./cache.js');
 const cache = new Cache();
 
 const DEFAULT_ENCODING = 'UTF-8';
-const ARRAY = 'arr';
+const ARRAY = `tundra_${getToken()}`;
 const ERROR_PREFIX = 'Error:';
 const ERROR_NOT_FOUND = `${ERROR_PREFIX} File not found`;
 const ERROR_INDEX = `${ERROR_PREFIX} Undefined index`;
@@ -65,6 +65,15 @@ let base_dir = '';
  * @type {bool}
  */
 let scoping = false;
+
+
+/**
+ * Returns a random alphanumeric string.
+ * @returns {string} The random alphanumeric string.
+ */
+function getToken() {
+    return Math.random().toString(36).slice(2);
+}
 
 
 /**

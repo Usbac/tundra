@@ -7,11 +7,11 @@
 <p align="center">
     <img src="https://img.shields.io/badge/stability-stable-green.svg">
     <img src="https://img.shields.io/badge/coverage-100%25-green">
-    <img src="https://img.shields.io/badge/version-1.0.0-blue.svg">
+    <img src="https://img.shields.io/badge/version-1.1.0-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
-Tundra is a small, fast and customizable template engine for Nodejs. It perfectly integrates with any back-end framework, even pure Nodejs.
+Tundra is a small, fast, customizable and easy to use template engine for Nodejs. It perfectly integrates with any back-end framework, even pure Nodejs.
 
 ## Features
 
@@ -51,7 +51,7 @@ Tundra is a small, fast and customizable template engine for Nodejs. It perfectl
 
 ## Example
 
-Rendering a view is this simple:
+Rendering a view in pure Nodejs is this simple:
 
 main.js:
 
@@ -92,6 +92,18 @@ To run the test suite, follow these steps:
 2. Run `npm update --save-dev` to install the dependencies.
 
 3. Run `npm test`.
+
+## Documentation
+
+The documentation is available at the [wiki page](https://github.com/Usbac/tundra/wiki).
+
+* [General usage](https://github.com/Usbac/tundra/wiki/General)
+
+* [Standard library](https://github.com/Usbac/tundra/wiki/Standard-library)
+
+* [Syntax](https://github.com/Usbac/tundra/wiki/Syntax)
+
+* [View inheritance](https://github.com/Usbac/tundra/wiki/Syntax)
 
 ## Contributing
 
