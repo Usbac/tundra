@@ -86,8 +86,8 @@ function setRegex() {
 
     //Update lookarounds regex
     lookaround_regexs = {
-        'block': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}block( ?){1,}(.*)( ?){1,}(?<=\\]\\})([\\s\\S]*?)(\\{\\[)( ?){1,}endblock( ?){1,}(\\]\\})`),
-        'parent': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}parent(.*)(?<=\\]\\})`),
+        'block': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}block( ?){1,}([^\\]\\}]*)( ?){1,}(?<=\\]\\})([\\s\\S]*?)(\\{\\[)( ?){1,}endblock( ?){1,}(\\]\\})`),
+        'parent': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}parent([^\\]\\}]*)(?<=\\]\\})`),
         'extends': new RegExp(`${regex_not_raw}(?=@extends\\()(.*)(?<=\\))`),
         'require': new RegExp(`${regex_not_raw}(?=@require\\()(.*)(?<=\\))`),
         'comment': new RegExp(`${regex_not_raw}(?={#)([\\s\\S]*?)(?<=#})`),
@@ -295,7 +295,7 @@ function getInheritCode(parent_dir, content) {
  * @returns {string} The content inside the block.
  */
 function getBlock(content, block_name, log = false) {
-    let block_regex = new RegExp(regexs.block.source.replace('(.*)', block_name));
+    let block_regex = new RegExp(regexs.block.source.replace('([^\\]\\}]*)', block_name));
     let block_content;
 
     if ((block_content = block_regex.exec(content)) != null) {
