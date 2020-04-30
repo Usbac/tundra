@@ -131,7 +131,6 @@ function noLookarounds(regex) {
  */
 function updateGeneralRegex() {
     general_regex = new RegExp(
-        lookaround_regexs.require.source + '|' +
         lookaround_regexs.comment.source + '|' +
         lookaround_regexs.code.source + '|' +
         lookaround_regexs.print.source + '|' +
@@ -142,21 +141,9 @@ function updateGeneralRegex() {
 /**
  * Returns the function partial source code of the given element.
  * @param {string} element - The element which is a partial string of the original file.
- * @param {Object} [data] - The content used for the view.
  * @returns {string} The function partial source code of the given element.
  */
-function getCode(element, data = {}) {
-    //Require
-    if (regexs.require.test(element)) {
-        let dir = element.replace(regexs.require, '$2');
-        if (!exists(dir)) {
-            console.log(`${ERROR_NOT_FOUND} (${dir})`);
-            return '';
-        }
-
-        return `${ARRAY}.push(\`${getRender(dir, data)}\`);`;
-    }
-
+function getCode(element) {
     //Comment
     if (regexs.comment.test(element)) {
         return '';
@@ -199,7 +186,7 @@ function getCode(element, data = {}) {
  * @returns {string} A view rendered.
  */
 function getRender(dir, data = {}) {
-    let func = getSourceCode(dir, data),
+    let func = getSourceCode(dir),
         content = '';
 
     if (func === false) {
@@ -220,37 +207,74 @@ function getRender(dir, data = {}) {
 /**
  * Returns the generated function source code of the given view file.
  * @param {string} dir - The file path.
- * @param {Object} data - The content used for the view.
  * @returns {string} The generated function source code of the given view file.
  */
-function getSourceCode(dir, data) {
+function getSourceCode(dir) {
     if (!exists(dir)) {
         return false;
     }
 
     let content = fs.readFileSync(dir, encoding);
-    let func = !scoping ? `with (this)` : '';
-    func += `{ \n let ${ARRAY} = [];\n`;
+    let func = scoping ? '' : 'with (this)';
+    func += `{ let ${ARRAY} = [];`;
 
-    // Replace the content of a extended view by its parent content
-    if (regexs.extends.test(content)) {
-        let parent_dir = regexs.extends.exec(content)[2];
-        content = getInheritCode(parent_dir, content);
-        if (!content) {
-            console.log(`${ERROR_NOT_FOUND} (${parent_dir})`);
-        }
-    }
+    content = replaceExtends(content);
+    content = replaceRequire(content);
 
     if (typeof content === 'string') {
         content.split(general_regex).filter(e => e).forEach(e => {
-            func += `${getCode(e, data)}\n`;
+            func += getCode(e) + ';';
         });
     }
 
     func = removeRaw(func);
-    func += `return ${ARRAY}.join(''); \n }`;
+    func += `return ${ARRAY}.join(''); }`;
 
     return func;
+}
+
+
+/**
+ * Returns the content of a extended view replaced by its parent content
+ * @param {string} content - The child view content.
+ * @returns {string} The content of the extended view replaced by its parent content.
+ */
+function replaceExtends(content) {
+    if (!regexs.extends.test(content)) {
+        return content;
+    }
+
+    let parent_dir = regexs.extends.exec(content)[2];
+    content = getInheritCode(parent_dir, content);
+    if (!content) {
+        console.log(`${ERROR_NOT_FOUND} (${parent_dir})`);
+    }
+
+    return content;
+}
+
+
+/**
+ * Returns the given content with the require tags replaced
+ * by the content of the file they specified.
+ * @param {string} content - The view content.
+ * @returns {string} The content with the require tags replaced
+ * by the content of the file they specified.
+ */
+function replaceRequire(content) {
+    let regex_require = new RegExp(regexs.require.source, 'g');
+    content = content.replace(regex_require, e => {
+        let file_path = e.replace(regexs.require, '$2').trim();
+
+        if (!exists(file_path)) {
+            console.log(`${ERROR_NOT_FOUND} (${file_path})`);
+            return '';
+        }
+
+        return fs.readFileSync(file_path, { encoding: encoding });
+    });
+
+    return content;
 }
 
 
