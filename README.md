@@ -7,11 +7,11 @@
 <p align="center">
     <img src="https://img.shields.io/badge/stability-stable-green.svg">
     <img src="https://img.shields.io/badge/coverage-100%25-green">
-    <img src="https://img.shields.io/badge/version-1.1.2-blue.svg">
+    <img src="https://img.shields.io/badge/version-1.2.0-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
-Tundra is a small, fast, customizable and easy to use template engine for Nodejs. It perfectly integrates with any back-end framework, even pure Nodejs.
+Tundra is a small, fast, customizable and easy to use template engine for Nodejs. It perfectly integrates with any back-end made in Js, even pure Nodejs.
 
 ## Features
 
@@ -24,6 +24,8 @@ Tundra is a small, fast, customizable and easy to use template engine for Nodejs
 * Customizable syntax.
 
 * Inheritance capabilities.
+
+* Reusable code blocks.
 
 * And more...
 
@@ -41,6 +43,11 @@ Tundra is a small, fast, customizable and easy to use template engine for Nodejs
 ~{{ escape_template_tags }}
 
 @require(imported_view.html)
+
+@spread(hello)
+
+{[ spread hello ]}
+{[ endspread ]}
 
 @extends(parent_view.html)
 
@@ -107,7 +114,7 @@ The documentation is available at the [wiki page](https://github.com/Usbac/tundr
 
 ## Contributing
 
-Any contribution or support to this project in the form of a issue, pull request or message will be highly appreciated.
+Any contribution or support to this project in the form of a issue, pull request or message will be highly appreciated. ❤️
 
 Don't be shy :)
 

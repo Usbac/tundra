@@ -82,12 +82,76 @@ That will leave this in the HTML returned to the client:
 
 ## Requiring views
 
-To get the content of another view in the current one you can use the require tag
+To get the content of another view in the current one you can use the `require` tag.
 
 ```
 @require(imported_view.html)
 ```
 
-That will put the content of the `imported_view.html` file in that line. If it doesn't exists, the line will be empty and an error will be printed in console.
+That will put the content of the `imported_view.html` file in that line.
+
+If it doesn't exists, the line will be empty and an error will be printed in console.
 
 *Included views have access to the variables in the current context.*
+
+## Reusable code blocks (spreads)
+
+In Tundra you can define and use reusable code blocks in your views, useful for avoiding code repetition.
+
+This reusable code blocks are called spreads.
+
+### Defining
+
+Example defining a spread:
+
+```html
+{[ spread hello ]}
+    Hello world
+{[ endspread ]}
+```
+
+### Using
+
+Example requesting it:
+
+```html
+@spread(hello)
+```
+
+That will put all the content of the `hello` spread in that line.
+
+### Example
+
+Here is a more complete example of a spread use in a view:
+
+```html
+{[ spread hello ]}
+    {% var msg = 'hello' %}
+    {{ msg }}
+{[ endspread ]}
+
+<!DOCTYPE html>
+    <head>
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        @spread(hello)
+    </body>
+</html>
+```
+
+That should leave the following code:
+
+```html
+<!DOCTYPE html>
+    <head>
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        {% var msg = 'hello' %}
+        {{ msg }}
+    </body>
+</html>
+```
+
+_Spreads can be defined anywhere in your file and can be requested as many times as you want._

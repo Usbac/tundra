@@ -3,7 +3,10 @@
         <title>{{ title }}</title>
     </head>
     <body>
-
+        {[ spread hello ]}
+            {% var msg = 'hello' %}
+            {{ msg }}
+        {[ endspread ]}
         <p>{! no_escaped_html !}</p>
 
         <p>This is a escaped template tag: ~{{ msg }}</p>
@@ -29,3 +32,5 @@
 </html>
 
 @require(test/views/footer.html)
+
+@spread(hello)

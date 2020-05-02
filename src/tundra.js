@@ -9,6 +9,7 @@ const ERROR_PREFIX = 'Error:';
 const ERROR_NOT_FOUND = `${ERROR_PREFIX} File not found`;
 const ERROR_INDEX = `${ERROR_PREFIX} Undefined index`;
 const ERROR_BLOCK = `${ERROR_PREFIX} No parent block found with the name`;
+const ERROR_SPREAD = `${ERROR_PREFIX} No spread block found with the name`;
 
 /**
  * The raw regex used to escape the rest of the tags.
@@ -88,8 +89,10 @@ function setRegex() {
     lookaround_regexs = {
         'block': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}block( ?){1,}([^\\]\\}]*)( ?){1,}(?<=\\]\\})([\\s\\S]*?)(\\{\\[)( ?){1,}endblock( ?){1,}(\\]\\})`),
         'parent': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}parent([^\\]\\}]*)(?<=\\]\\})`),
+        'spread_block': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}spread( ?){1,}([^\\]\\}]*)( ?){1,}(?<=\\]\\})([\\s\\S]*?)(\\{\\[)( ?){1,}endspread( ?){1,}(\\]\\})`),
         'extends': new RegExp(`${regex_not_raw}(?=@extends\\()(.*)(?<=\\))`),
         'require': new RegExp(`${regex_not_raw}(?=@require\\()(.*)(?<=\\))`),
+        'spread': new RegExp(`${regex_not_raw}(?=@spread\\()(.*)(?<=\\))`),
         'comment': new RegExp(`${regex_not_raw}(?={#)([\\s\\S]*?)(?<=#})`),
         'print_plain': new RegExp(`${regex_not_raw}(?={!)(.*?)(?<=!})`),
         'print': new RegExp(`${regex_not_raw}(?={{)(.*?)(?<=}})`),
@@ -186,8 +189,8 @@ function getCode(element) {
  * @returns {string} A view rendered.
  */
 function getRender(dir, data = {}) {
-    let func = getSourceCode(dir),
-        content = '';
+    let func = getSourceCode(dir);
+    let content = '';
 
     if (func === false) {
         return false;
@@ -218,6 +221,7 @@ function getSourceCode(dir) {
     let func = scoping ? '' : 'with (this)';
     func += `{ let ${ARRAY} = [];`;
 
+    content = replaceSpreads(content);
     content = replaceExtends(content);
     content = replaceRequire(content);
 
@@ -235,9 +239,47 @@ function getSourceCode(dir) {
 
 
 /**
- * Returns the content of a extended view replaced by its parent content
+ * Returns the content of a view with the spread blocks replaced,
+ * and without the spread blocks definition.
  * @param {string} content - The child view content.
- * @returns {string} The content of the extended view replaced by its parent content.
+ * @returns {string} The content of the view with the spread blocks replaced.
+ */
+function replaceSpreads(content) {
+    let regex_spread = new RegExp(regexs.spread.source, 'g');
+    let regex_spread_block = new RegExp(regexs.spread_block.source, 'g');
+    content = content.replace(regex_spread, e => {
+        let name = e.replace(regex_spread, '$2').trim();
+        return getSpread(content, name);
+    });
+
+    // Remove remaining spread blocks
+    return content.replace(regex_spread_block, '');
+}
+
+
+/**
+ * Returns the given content with the specified spread block replaced.
+ * @param {string} content - The child view content.
+ * @param {string} name - The name of the spread block to replace.
+ * @returns {string} The content with the specified spread block replaced.
+ */
+function getSpread(content, name) {
+    let regex_spread = new RegExp(regexs.spread_block.source.replace('([^\\]\\}]*)', name), 'g');
+    let spread_content;
+
+    if ((spread_content = regex_spread.exec(content)) != null) {
+        return spread_content[6].trim();
+    }
+
+    console.log(`${ERROR_SPREAD} '${name}'`);
+    return '';
+}
+
+
+/**
+ * Returns the given content replaced by its parent content
+ * @param {string} content - The child view content.
+ * @returns {string} The content replaced by its parent content.
  */
 function replaceExtends(content) {
     if (!regexs.extends.test(content)) {
@@ -519,7 +561,6 @@ module.exports = class View {
                 break;
             case 'print_plain': case 'print':
                 lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
-                console.log(lookaround_regexs[key]);
                 break;
             case 'comment':
                 lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})([\\s\\S]*?)(?<=${last_val})`);
