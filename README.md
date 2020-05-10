@@ -1,5 +1,8 @@
 <h1 align="center">
-  <img src="http://usbac.com.ve/wp-content/uploads/2019/12/Tundra.svg" alt="Tundra title" height="100">
+  <img src="http://usbac.com.ve/images/Tundra.svg" alt="Tundra title" width="150">
+  <br>
+  Tundra
+  <br>
 </h1>
 
 <p align="center">The comprehensive template engine for Nodejs.</p>
