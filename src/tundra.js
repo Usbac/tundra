@@ -4,7 +4,6 @@ const cache = new Cache();
 const Parser = require('./parser.js');
 const parser = new Parser();
 
-const DEFAULT_ENCODING = 'UTF-8';
 const ERROR_PREFIX = 'Error:';
 const ERROR_INDEX = `${ERROR_PREFIX} Undefined index`;
 
@@ -219,10 +218,10 @@ module.exports = class View {
 
     /**
      * Sets the file encoding used for the views.
-     * @param {string} [new_encoding] - The new file encoding.
+     * @param {string} [encoding] - The file encoding.
      */
-    setEncoding(new_encoding = DEFAULT_ENCODING) {
-        parser.setEncoding(new_encoding);
+    setEncoding(encoding = undefined) {
+        parser.setEncoding(encoding);
     }
 
 

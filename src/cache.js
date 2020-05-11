@@ -2,7 +2,7 @@
  * The cache views.
  * @type {Map}
  */
-let cache = new Map();
+let views = new Map();
 
 
 module.exports = class Cache {
@@ -22,13 +22,13 @@ module.exports = class Cache {
      * @returns {string} A cache view rendered.
      */
     get(key, data = {}) {
-        if (!cache.has(key)) {
+        if (!views.has(key)) {
             return false;
         }
 
         try {
             require('./stdlib.js');
-            return new Function(cache.get(key)).apply(data);
+            return new Function(views.get(key)).apply(data);
         } catch(err) {
             throw new Error(err);
         }
@@ -41,8 +41,8 @@ module.exports = class Cache {
      * @param {string} content - The cache content.
      */
     set(key, content) {
-        if (!cache.has(key)) {
-            cache.set(key, content);
+        if (!views.has(key)) {
+            views.set(key, content);
         }
     }
 
@@ -53,7 +53,7 @@ module.exports = class Cache {
      * @returns {bool} True if the given cache exists, false otherwise.
      */
     has(key) {
-        return cache.has(key);
+        return views.has(key);
     }
 
 }

@@ -1,10 +1,11 @@
 const fs = require('fs');
 
-const ARRAY = `tundra_${getToken()}`;
+const ARRAY = 'tundra_' + getToken();
 const ERROR_PREFIX = 'Parser error:';
-const ERROR_NOT_FOUND = `${ERROR_PREFIX} File not found`;
-const ERROR_BLOCK = `${ERROR_PREFIX} No parent block found with the name`;
-const ERROR_SPREAD = `${ERROR_PREFIX} No spread block found with the name`;
+const ERROR_NOT_FOUND = `File not found`;
+const ERROR_BLOCK = `No parent block found with the name`;
+const ERROR_SPREAD = `No spread block found with the name`;
+const DEFAULT_ENCODING = 'UTF-8';
 
 /**
  * The raw regex used to escape the rest of the tags.
@@ -42,7 +43,7 @@ let general_regex;
  * The encoding for files.
  * @type {string}
  */
-let encoding;
+let encoding = DEFAULT_ENCODING;
 
 /**
  * Use or not the scoping in the views.
@@ -173,14 +174,13 @@ function getCode(element) {
  */
 function replaceSpreads(content) {
     let regex_spread = new RegExp(regexs.spread.source, 'g');
-    let regex_spread_block = new RegExp(regexs.spread_block.source, 'g');
     content = content.replace(regex_spread, e => {
         let name = e.replace(regex_spread, '$2').trim();
         return getSpread(content, name);
     });
 
     // Remove remaining spread blocks
-    return content.replace(regex_spread_block, '');
+    return content.replace(new RegExp(regexs.spread_block.source, 'g'), '');
 }
 
 
@@ -198,7 +198,7 @@ function getSpread(content, name) {
         return spread_content[6].trim();
     }
 
-    console.log(`${ERROR_SPREAD} '${name}'`);
+    error(ERROR_SPREAD, name);
     return '';
 }
 
@@ -214,9 +214,9 @@ function replaceExtends(content) {
     }
 
     let parent_dir = regexs.extends.exec(content)[2];
-    content = getInheritCode(parent_dir, content);
-    if (!content) {
-        console.log(`${ERROR_NOT_FOUND} (${parent_dir})`);
+
+    if (!(content = getInheritCode(parent_dir, content))) {
+        error(ERROR_NOT_FOUND, parent_dir);
     }
 
     return content;
@@ -236,7 +236,7 @@ function replaceRequire(content) {
         let file_path = e.replace(regexs.require, '$2').trim();
 
         if (!exists(file_path)) {
-            console.log(`${ERROR_NOT_FOUND} (${file_path})`);
+            error(ERROR_NOT_FOUND, file_path);
             return '';
         }
 
@@ -296,7 +296,7 @@ function getBlock(content, block_name, log = false) {
     }
 
     if (log) {
-        console.log(`${ERROR_BLOCK} '${block_name}'`);
+        error(ERROR_BLOCK, block_name);
     }
 
     return '';
@@ -310,7 +310,7 @@ function getBlock(content, block_name, log = false) {
  */
 function removeRaw(str) {
     Object.keys(lookaround_regexs).forEach(key => {
-        let regex = `${regex_raw}(${ lookaround_regexs[key].source.replace(regex_not_raw, '') })`;
+        let regex = `${regex_raw}(${lookaround_regexs[key].source.replace(regex_not_raw, '')})`;
         str = str.replace(new RegExp(regex), '$1');
     });
 
@@ -320,7 +320,7 @@ function removeRaw(str) {
 
 /**
  * Returns true if the given file exists, false otherwise.
- * @param {string} str - The file directory.
+ * @param {string} dir - The file path.
  * @returns {string} True if the given file exists, false otherwise.
  */
 function exists(dir) {
@@ -329,6 +329,16 @@ function exists(dir) {
     } catch(err) {
         return false;
     }
+}
+
+
+/**
+ * Displays an error to the console.
+ * @param {string} msg - The error message.
+ * @param {string} context - The additional context.
+ */
+function error(msg, context) {
+    console.log(`${ERROR_PREFIX} ${msg} (${context})`);
 }
 
 
@@ -371,7 +381,7 @@ module.exports = class Parser {
 
     /**
      * Returns true if the given file exists, false otherwise.
-     * @param {string} str - The file directory.
+     * @param {string} dir - The file path.
      * @returns {string} True if the given file exists, false otherwise.
      */
     exists(dir) {
@@ -390,9 +400,9 @@ module.exports = class Parser {
 
     /**
      * Sets the file encoding used for the views.
-     * @param {string} [new_encoding] - The new file encoding.
+     * @param {string} [new_encoding] - The file encoding.
      */
-    setEncoding(new_encoding) {
+    setEncoding(new_encoding = DEFAULT_ENCODING) {
         encoding = new_encoding;
     }
 
