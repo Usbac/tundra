@@ -2,9 +2,10 @@ const fs = require('fs');
 
 const ARRAY = 'tundra_' + getToken();
 const ERROR_PREFIX = 'Parser error:';
-const ERROR_NOT_FOUND = `File not found`;
-const ERROR_BLOCK = `No parent block found with the name`;
-const ERROR_SPREAD = `No spread block found with the name`;
+const ERROR_INDEX = 'Undefined index';
+const ERROR_NOT_FOUND = 'File not found';
+const ERROR_BLOCK = 'No parent block found with the name';
+const ERROR_SPREAD = 'No spread block found with the name';
 const DEFAULT_ENCODING = 'UTF-8';
 
 /**
@@ -85,7 +86,7 @@ function setRegex() {
         'code_end': new RegExp(`${regex_not_raw}(?={%)( ?){1,}end( ?){1,}(?<=%})`)
     }
 
-    UpdateNormalRegex();
+    updateNormalRegex();
     updateGeneralRegex();
 }
 
@@ -94,7 +95,7 @@ function setRegex() {
  * Sets the regexs array values equal to lookaround_regex array values
  * without zero-length assertions (lookarounds).
  */
-function UpdateNormalRegex() {
+function updateNormalRegex() {
     Object.keys(lookaround_regexs).forEach(key => {
         regexs[key] = noLookarounds(lookaround_regexs[key]);
     });
@@ -382,10 +383,17 @@ module.exports = class Parser {
     /**
      * Returns true if the given file exists, false otherwise.
      * @param {string} dir - The file path.
+     * @param {bool} log - Log an error if the view does not exists.
      * @returns {string} True if the given file exists, false otherwise.
      */
-    exists(dir) {
-        return exists(dir);
+    exists(dir, log = false) {
+        let file_exists = exists(dir);
+
+        if (!file_exists && log) {
+            error(ERROR_NOT_FOUND, dir);
+        }
+
+        return file_exists;
     }
 
 
@@ -413,5 +421,44 @@ module.exports = class Parser {
      */
     getEncoding() {
         return encoding;
+    }
+
+
+    /**
+     * Sets the value of a regex tag.
+     * @param {string} key - The regex tag to modify.
+     * @param {string} first_val - The first (left) value of the tag.
+     * @param {string} [last_val] - The last (right) value of the tag.
+     * @returns {string} True in case of success, false otherwise.
+     */
+    set(key, first_val, last_val = '') {
+        if (typeof general_regex == 'undefined') {
+            setRegex();
+        }
+
+        switch(key) {
+            case 'code':
+                lookaround_regexs.code = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
+                lookaround_regexs.code_begin = new RegExp(`${regex_not_raw}(?=${first_val})(.*)(?<=:( ?){1,}${last_val})`);
+                lookaround_regexs.code_end = new RegExp(`${regex_not_raw}(?=${first_val})( ?){1,}end( ?){1,}(?<=${last_val})`);
+                break;
+            case 'print_plain': case 'print':
+                lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
+                break;
+            case 'comment':
+                lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})([\\s\\S]*?)(?<=${last_val})`);
+                break;
+            case 'raw':
+                regex_raw = first_val;
+                regex_not_raw = `(?<!${regex_raw})`;
+                break;
+            default:
+                error(ERROR_INDEX, key);
+                return false;
+        }
+
+        updateNormalRegex();
+        updateGeneralRegex();
+        return true;
     }
 }

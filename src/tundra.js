@@ -4,9 +4,6 @@ const cache = new Cache();
 const Parser = require('./parser.js');
 const parser = new Parser();
 
-const ERROR_PREFIX = 'Error:';
-const ERROR_INDEX = `${ERROR_PREFIX} Undefined index`;
-
 /**
  * The file views extension.
  * @type {string}
@@ -120,8 +117,7 @@ module.exports = class View {
 
         //Without cache
         if (!cache.active) {
-            if (!parser.exists(complete_dir)) {
-                console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
+            if (!parser.exists(complete_dir, true)) {
                 return false;
             }
 
@@ -130,8 +126,7 @@ module.exports = class View {
 
         //With cache
         if (!cache.has(dir)) {
-            if (!parser.exists(complete_dir)) {
-                console.log(`${ERROR_NOT_FOUND} (${complete_dir})`);
+            if (!parser.exists(complete_dir, true)) {
                 return false;
             }
 
@@ -185,34 +180,7 @@ module.exports = class View {
      * @returns {string} True in case of success, false otherwise.
      */
     set(key, first_val, last_val = '') {
-        if (typeof general_regex == 'undefined') {
-            setRegex();
-        }
-
-        switch(key) {
-            case 'code':
-                lookaround_regexs.code = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
-                lookaround_regexs.code_begin = new RegExp(`${regex_not_raw}(?=${first_val})(.*)(?<=:( ?){1,}${last_val})`);
-                lookaround_regexs.code_end = new RegExp(`${regex_not_raw}(?=${first_val})( ?){1,}end( ?){1,}(?<=${last_val})`);
-                break;
-            case 'print_plain': case 'print':
-                lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
-                break;
-            case 'comment':
-                lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})([\\s\\S]*?)(?<=${last_val})`);
-                break;
-            case 'raw':
-                regex_raw = first_val;
-                regex_not_raw = `(?<!${regex_raw})`;
-                break;
-            default:
-                console.log(`${ERROR_INDEX} '${key}'`);
-                return false;
-        }
-
-        UpdateNormalRegex();
-        updateGeneralRegex();
-        return true;
+        return parser.set(key, first_val, last_val);
     }
 
 

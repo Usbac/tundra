@@ -9,8 +9,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/stability-stable-green.svg">
-    <img src="https://img.shields.io/badge/coverage-100%25-green">
-    <img src="https://img.shields.io/badge/version-1.2.0-blue.svg">
+    <img src="https://img.shields.io/badge/version-1.2.1-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
@@ -83,12 +82,12 @@ http.createServer((req, res) => {
 
 home.html:
 ```html
-<!DOCTYPE html>
+<html>
     <head>
         <title>{{ title }}</title>
     </head>
     <body>
-        {{ msg }}
+        Message is: {{ msg }}
     </body>
 </html>
 ```
@@ -114,6 +113,12 @@ The documentation is available at the [wiki page](https://github.com/Usbac/tundr
 * [Syntax](https://github.com/Usbac/tundra/wiki/Syntax)
 
 * [View inheritance](https://github.com/Usbac/tundra/wiki/Syntax)
+
+## VSC Extension
+
+There's a syntax highlighter extension of Tundra available for Visual Studio Code, download it here:
+
+### [Tundra - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=usbac.tundra).
 
 ## Contributing
 
