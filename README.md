@@ -116,9 +116,9 @@ The documentation is available at the [wiki page](https://github.com/Usbac/tundr
 
 ## VSC Extension
 
-There's a syntax highlighter extension of Tundra available for Visual Studio Code, download it here:
+There's a syntax highlighting extension of Tundra available for Visual Studio Code, download it here:
 
-### [Tundra - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=usbac.tundra).
+### [Tundra - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=usbac.tundra)
 
 ## Contributing
 
