@@ -363,9 +363,9 @@ module.exports = class Parser {
         let func = scoping ? '' : 'with (this)';
         func += `{ let ${ARRAY} = [];`;
 
-        content = replaceSpreads(content);
         content = replaceExtends(content);
         content = replaceRequire(content);
+        content = replaceSpreads(content);
 
         if (typeof content === 'string') {
             content.split(general_regex).filter(e => e).forEach(e => {

@@ -9,11 +9,11 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/stability-stable-green.svg">
-    <img src="https://img.shields.io/badge/version-1.2.1-blue.svg">
+    <img src="https://img.shields.io/badge/version-1.3.0-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
-Tundra is a small, fast, customizable and easy to use template engine for Nodejs. It perfectly integrates with any back-end made in Js, even pure Nodejs.
+Tundra is a small, fast, customizable and easy to use template engine. It perfectly integrates with any back-end made in Js, even pure Nodejs.
 
 ## Features
 
@@ -29,7 +29,7 @@ Tundra is a small, fast, customizable and easy to use template engine for Nodejs
 
 * Reusable code blocks.
 
-* And more...
+And more...
 
 ## Code snippets
 
