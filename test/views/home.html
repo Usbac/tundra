@@ -9,6 +9,7 @@
         {[ endspread ]}
         <p>{! no_escaped_html !}</p>
 
+        old_text_to_replace
         <p>This is a escaped template tag: ~{{ msg }}</p>
 
         {# Comment that won't appear in the HTML #}
@@ -31,6 +32,6 @@
     </body>
 </html>
 
-@require(test/views/footer.html)
+@require(footer.html)
 
 @spread(hello)

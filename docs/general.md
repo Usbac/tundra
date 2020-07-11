@@ -5,28 +5,6 @@ const Tundra = require('tundrajs');
 var view = new Tundra();
 ```
 
-## Mapping the response
-
-`mapResponse(res)`
-
-The `mapResponse` method will map some of the Tundra's methods into the giving `ServerResponse` object. This can be done simply for avoiding code repetition.
-
-```js
-view.mapResponse(res);
-```
-
-The methods mapped to the giving Response are `render`, `getRender` and `exists`. The methods will stay exactly the same except for the `render` method which won't require its original first parameter.
-
-Example using the mapped methods in the Response:
-
-```js
-res.render('home.html', data);
-
-res.getRender('home.html');
-
-res.exists('home.html');
-```
-
 ## Methods
 
 ### Render
@@ -142,6 +120,10 @@ view.getEncoding();
 
 This method is used to customize the template tags, explained below.
 
+### Extend
+
+This method is used to create custom rules for the parser, explained below.
+
 ## Defining options
 
 `setOptions([options])`
@@ -154,7 +136,7 @@ The tundra constructor takes an optional parameter which must be an object with 
 
 * **encoding**: The encoding used for the files, by default it's `UTF-8`.
 
-* **scoping**: Use or not the scope in the views. With scoping on `{{ this.msg }}`, with scoping off `{{ msg }}`.
+* **scoping**: Use or not the scope in the views (with scoping on `{{ this.msg }}`, with scoping off `{{ msg }}`).
 
 * **extension**: The default extension used for the views, if specified, no extension must be used when specifying a view.
 
@@ -204,8 +186,35 @@ You will be able to do:
 view.render(res, 'home', data);
 ```
 
-All of this using `ascii` as encoding for reading and writing to files.
+All of this using `ascii` as encoding for reading and writing to files and with the cache system activated.
 
+## Extending Tundra
+
+`extend(function)`
+
+You can define custom rules or syntax for the Tundra parser with the `extend` method, so you can even create your own tags and modifications on the go.
+
+The function must take a string and return a string, these are supposed to be the view content. Obviously you can do whatever you want with it in the function.
+
+```js
+view.extend(content => {
+    return content.replace('old msg', 'new msg');
+});
+```
+
+The above example will replace the text `old msg` with the text `new msg` in the views, so now the following html code:
+
+```html
+<p>This is an old msg</p>
+```
+
+Will be replaced by this:
+
+```html
+<p>This is an new msg</p>
+```
+
+_Keep in mind that the custom syntax has a higher precedence than the Tundra syntax, meaning that you can even override the native syntax._
 
 ## Customizing tags
 
@@ -213,7 +222,7 @@ All of this using `ascii` as encoding for reading and writing to files.
 
 With the `set` method you can customize most of the Tundra tags to your convenience.
 
-That method takes three parameters, the key or tag name to modify, the first value of the tag (left side) and the second or last value of the tag (right side). The last parameter is unnecessary when modifying the `raw` tag.
+This method takes three parameters, the key or tag name to modify, the first value of the tag (left side) and the second or last value of the tag (right side). The last parameter is unnecessary when modifying the `raw` tag.
 
 The available keys/tags to modify are the following:
 
@@ -235,4 +244,26 @@ After that you will be able to put code in your views this way:
 
 ```
 (( var foo = true ))
+```
+
+## Mapping the response (Optional)
+
+`mapResponse(res)`
+
+The `mapResponse` method will map some of the Tundra's methods into the given `ServerResponse` object. This can be done simply for avoiding code repetition.
+
+```js
+view.mapResponse(res);
+```
+
+The methods mapped to the giving Response are `render`, `getRender` and `exists`. The methods will stay exactly the same except for the `render` method which won't require its original first parameter.
+
+Example using the mapped methods in the Response:
+
+```js
+res.render('home.html', data);
+
+res.getRender('home.html');
+
+res.exists('home.html');
 ```

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const ARRAY = 'tundra_' + getToken();
 const ERROR_PREFIX = 'Parser error:';
@@ -51,6 +52,18 @@ let encoding = DEFAULT_ENCODING;
  * @type {bool}
  */
 let scoping = false;
+
+/**
+ * The base directory for the views.
+ * @type {string}
+ */
+let base_dir = '';
+
+/**
+ * List of custom rules.
+ * @type {array}
+ */
+let custom_list = [];
 
 
 /**
@@ -215,6 +228,7 @@ function replaceExtends(content) {
     }
 
     let parent_dir = regexs.extends.exec(content)[2];
+    parent_dir = path.join(base_dir, parent_dir);
 
     if (!(content = getInheritCode(parent_dir, content))) {
         error(ERROR_NOT_FOUND, parent_dir);
@@ -233,8 +247,10 @@ function replaceExtends(content) {
  */
 function replaceRequire(content) {
     let regex_require = new RegExp(regexs.require.source, 'g');
+
     content = content.replace(regex_require, e => {
         let file_path = e.replace(regexs.require, '$2').trim();
+        file_path = path.join(base_dir, file_path);
 
         if (!exists(file_path)) {
             error(ERROR_NOT_FOUND, file_path);
@@ -242,6 +258,22 @@ function replaceRequire(content) {
         }
 
         return fs.readFileSync(file_path, { encoding: encoding });
+    });
+
+    return content;
+}
+
+
+/**
+ * Returns the content with the custom rules
+ * applied over it.
+ * @param {string} content - The view content.
+ * @returns {string} The content with the custom rules
+ * applied over it.
+ */
+function replaceCustom(content) {
+    custom_list.forEach(e => {
+        content = e(content);
     });
 
     return content;
@@ -363,6 +395,7 @@ module.exports = class Parser {
         let func = scoping ? '' : 'with (this)';
         func += `{ let ${ARRAY} = [];`;
 
+        content = replaceCustom(content);
         content = replaceExtends(content);
         content = replaceRequire(content);
         content = replaceSpreads(content);
@@ -407,6 +440,15 @@ module.exports = class Parser {
 
 
     /**
+     * Sets the base directory for the views.
+     * @param {string} [dir] - The base directory.
+     */
+    setBase(dir) {
+        base_dir = dir;
+    }
+
+
+    /**
      * Sets the file encoding used for the views.
      * @param {string} [new_encoding] - The file encoding.
      */
@@ -421,6 +463,15 @@ module.exports = class Parser {
      */
     getEncoding() {
         return encoding;
+    }
+
+
+    /**
+     * Adds a custom rule to the parser.
+     * @param {closure} func - The custom rule.
+     */
+    extend(func) {
+        custom_list.push(func);
     }
 
 

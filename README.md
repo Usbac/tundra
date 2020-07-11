@@ -9,7 +9,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/stability-stable-green.svg">
-    <img src="https://img.shields.io/badge/version-1.3.0-blue.svg">
+    <img src="https://img.shields.io/badge/version-2.0.0-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
@@ -17,7 +17,7 @@ Tundra is a small, fast, customizable and easy to use template engine. It perfec
 
 ## Features
 
-* Easy to learn and with a small codebase.
+* Easy to learn and lightweight.
 
 * Cache system for speeding up the loading of views.
 
@@ -29,7 +29,7 @@ Tundra is a small, fast, customizable and easy to use template engine. It perfec
 
 * Reusable code blocks.
 
-And more...
+And **much** more...
 
 ## Code snippets
 

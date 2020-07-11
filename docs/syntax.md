@@ -4,11 +4,11 @@ This is the available syntax for the Tundra views.
 
 This will print the variable contained in the data object passed to the `render` or `getRender` method.
 
-_For your safety anything printed inside this tags will be escaped._
-
 ```
 {{ variable }}
 ```
+
+_For your safety anything printed inside this tags will be escaped._
 
 ## Raw print
 
@@ -22,13 +22,13 @@ _Be careful about what will be printed in that tags since it will NOT be escaped
 
 ## Comments
 
-The comments of Tundra have an advantage over the common HTML comments and is that these comments won't be rendered to the user.
+The comments of Tundra have an advantage over the common HTML comments, and is that these comments won't be rendered to the user.
 
 ```
 {# comment #}
 ```
 
-The comments accept multilines too
+The comments accept multilines too.
 
 ```
 {#
@@ -46,11 +46,11 @@ Any type of Javascript code can be put between the `{% %}` tags.
 {% var code_inside_this_tags = true %}
 ```
 
-Tundra doesn't limit you about what kind of code can be put between those tags, so remember that it's up to you.
+Tundra doesn't limit you about what kind of code can be put between those tags, so that it's up to you.
 
 ### Brackets
 
-The brackets `{ }` used for conditionals and circles in normal Js code can be replaced by `:` and `end`, this is just syntactic sugar.
+The brackets `{ }` used for conditionals and cycles in normal Js code can be replaced by `:` and `end`, this is just syntactic sugar.
 
 Normal:
 ```js
@@ -88,13 +88,15 @@ To get the content of another view in the current one you can use the `require` 
 @require(imported_view.html)
 ```
 
-That will put the content of the `imported_view.html` file in that line.
+That will put all the content of the `imported_view.html` file in that line.
 
 If it doesn't exists, the line will be empty and an error will be printed in console.
 
-*Included views have access to the variables in the current context.*
+_Included views have access to the variables in the current context._
 
-## Reusable code blocks (spreads)
+_The path inside this tag is relative to the base directory variable._
+
+## Spreads (Reusable code blocks)
 
 In Tundra you can define and use reusable code blocks in your views, useful for avoiding code repetition.
 
@@ -122,7 +124,7 @@ That will put all the content of the `hello` spread in that line.
 
 ### Example
 
-Here is a more complete example of a spread use in a view:
+Here is a more complete example of a spread in a view:
 
 ```html
 {[ spread hello ]}

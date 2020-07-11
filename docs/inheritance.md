@@ -12,6 +12,8 @@ A child view must extends from a parent, you can specify that with the following
 @extends(parent_view.html)
 ```
 
+_The path inside this tag is relative to the base directory variable._
+
 _It's recommended to have this tag at the top of the child file._
 
 ### Getting a block content in the child view

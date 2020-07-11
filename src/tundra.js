@@ -70,6 +70,7 @@ module.exports = class View {
 
         if (options.hasOwnProperty('base')) {
             this.setBase(options.base);
+            parser.setBase(options.base);
         }
 
         if (options.hasOwnProperty('extension')) {
@@ -185,6 +186,16 @@ module.exports = class View {
 
 
     /**
+     * Adds a custom rule to the parser. The parameter
+     * must be a closure that accepts and returns a string.
+     * @param {function} func - The custom function.
+     */
+    extend(func) {
+        parser.extend(func);
+    }
+
+
+    /**
      * Sets the file encoding used for the views.
      * @param {string} [encoding] - The file encoding.
      */
@@ -208,6 +219,7 @@ module.exports = class View {
      */
     setBase(dir = '') {
         base_dir = dir;
+        parser.setBase(dir);
     }
 
 
