@@ -124,7 +124,7 @@ There's a syntax highlighting extension of Tundra available for Visual Studio Co
 
 Any contribution or support to this project in the form of a issue, pull request or message will be highly appreciated. ❤️
 
-Don't be shy :)
+You can read more about it [right here](CONTRIBUTING.md). Don't be shy :)
 
 ## License
 
