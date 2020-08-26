@@ -8,8 +8,8 @@
 <p align="center">The comprehensive template engine for Nodejs.</p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/stability-stable-green.svg">
-    <img src="https://img.shields.io/badge/version-2.0.0-blue.svg">
+    <img src="https://travis-ci.org/Usbac/tundra.svg?branch=master">
+    <img src="https://img.shields.io/badge/stable-2.0.0-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
