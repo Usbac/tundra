@@ -114,3 +114,5 @@ http.createServer((req, res) => {
 
     res.end();
 }).listen(8080);
+
+setTimeout(() => process.exit(0), 3000)
