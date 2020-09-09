@@ -435,7 +435,7 @@ module.exports = class Parser {
      * @param {string} [new_scope] - Use or not scoping.
      */
     setScoping(new_scope) {
-        scope = new_scope;
+        scoping = new_scope;
     }
 
 
