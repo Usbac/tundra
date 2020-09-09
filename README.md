@@ -9,7 +9,7 @@
 
 <p align="center">
     <img src="https://travis-ci.org/Usbac/tundra.svg?branch=master">
-    <img src="https://img.shields.io/badge/stable-2.0.0-blue.svg">
+    <img src="https://img.shields.io/badge/stable-2.0.1-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
@@ -70,12 +70,11 @@ var Tundra = require('tundrajs');
 var view = new Tundra();
 
 http.createServer((req, res) => {
-    let data = {
+    view.render(res, 'home.html', {
         title: 'Tundra',
         msg: 'Hello World!'
-    };
+    });
 
-    view.render(res, 'home.html', data);
     res.end();
 }).listen(8080);
 ```

@@ -1,6 +1,6 @@
 {
   "name": "tundrajs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "The comprehensive template engine",
   "main": "src/tundra.js",
   "devDependencies": {
@@ -11,8 +11,8 @@
     "test": "mocha test/*.js"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/usbac/tundra.git"
+    "type": "git",
+    "url": "https://github.com/usbac/tundra.git"
   },
   "keywords": [
     "template",
