@@ -14,21 +14,9 @@
 
         {# Comment that won't appear in the HTML #}
 
-        {% if (true): %}
+        {% if (false): %}
             <p>This is inside a Js condition</p>
         {% end %}
-
-        <p>Using the stdlib:</p>
-        {{ sum('2.5', 3, 2) }}<br>
-        {{ subtract('2.5', 3, 2) }}<br>
-        {{ average([4.5, 6, 3, 2.8, 9]) }}<br>
-        {{ strBefore('Lorem ipsum dolor sit', 'ipsum') }}<br>
-        {{ strAfter('Lorem ipsum dolor sit', 'ipsum') }}<br>
-        {{ remove('Lorem ipsum dolor sit', 'ipsum') }}<br>
-        {{ titleCase('lorem ipsum dolor sit') }}<br>
-        {{ range(1, 10) }}<br>
-        {{ join(['you', 'me', 'I'], ', ', ' and ') }}<br>
-        {{ round(1.446, 2) }}<br>
     </body>
 </html>
 

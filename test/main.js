@@ -5,7 +5,8 @@ const request = require('supertest');
 const Tundra = require('../src/tundra.js');
 const Cache = require('../src/cache.js');
 
-const EXPECTED_VIEW = '<!DOCTYPE html>\n    <head>\n        <title>Tundra</title>\n    </head>\n    <body>\n        \n        <p><b>This is text between b tags (html characters not escaped).</b></p>\n\n        custom_msg\n        <p>This is a escaped template tag: {{ msg }}</p>\n\n        \n\n        \n            <p>This is inside a Js condition</p>\n        \n\n        <p>Using the stdlib:</p>\n        7.5<br>\n        -7.5<br>\n        5.06<br>\n        Lorem <br>\n         dolor sit<br>\n        Lorem  dolor sit<br>\n        Lorem ipsum dolor sit<br>\n        1,2,3,4,5,6,7,8,9,10<br>\n        you, me and I<br>\n        1.45<br>\n    </body>\n</html>\n\n<div>\n    Tundra - The comprehensive template engine\n</div>\n\n\n\n            hello\n';
+const PORT = 8080;
+const EXPECTED_VIEW = '<!DOCTYPE html>\n    <head>\n        <title>Tundra</title>\n    </head>\n    <body>\n        \n        <p><b>Hello.</b></p>\n\n        custom_msg\n        <p>This is a escaped template tag: {{ msg }}</p>\n\n        \n\n        \n    </body>\n</html>\n\n<div>\n    Tundra - The comprehensive template engine\n</div>\n\n\n\n            hello\n';
 const EXPECTED_CHILD_VIEW = `<!DOCTYPE html>\n<html lang="en">\n<head>\n    \n    \n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <meta http-equiv="X-UA-Compatible" content="ie=edge">\n    \n    <title>I\'m child view</title>\n\n</head>\n<body>\n    \n    <p>Hello world from a child view</p>\n\n</body>\n</html>\n`;
 
 
@@ -161,7 +162,7 @@ describe('Standard library', function() {
 
 
 describe('Engine', function() {
-    let local_req = request(`http://localhost:8080`);
+    let local_req = request(`http://localhost:${PORT}`);
 
     it('should render a sample view correctly', function(done) {
         local_req.get('/home').expect(EXPECTED_VIEW, done);
@@ -189,8 +190,8 @@ describe('Engine', function() {
 });
 
 
-// Server
 http.createServer((req, res) => {
+    let pathname = url.parse(req.url).pathname;
     let view = new Tundra({
         'cache': true,
         'base': 'test/views',
@@ -199,10 +200,8 @@ http.createServer((req, res) => {
 
     let data = {
         title: 'Tundra',
-        no_escaped_html: '<b>This is text between b tags (html characters not escaped).</b>',
+        no_escaped_html: '<b>Hello.</b>',
     };
-
-    let pathname = url.parse(req.url).pathname;
 
     view.mapResponse(res);
     view.set('print', '{{', '}}');
@@ -210,7 +209,6 @@ http.createServer((req, res) => {
         return str.replace('old_text_to_replace', 'custom_msg');
     });
 
-    // View rendering
     switch (pathname) {
         case '/home':
             view.render(res, 'home', data);
@@ -233,6 +231,6 @@ http.createServer((req, res) => {
     }
 
     res.end();
-}).listen(8080);
+}).listen(PORT);
 
 setTimeout(() => process.exit(0), 3000)

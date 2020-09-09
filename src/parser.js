@@ -78,7 +78,11 @@ function getToken() {
 /**
  * Initializes all the regex variables.
  */
-function setRegex() {
+function initRegex() {
+    if (typeof general_regex !== 'undefined') {
+        return;
+    }
+
     regexs = {};
     regex_raw = '~';
     regex_not_raw = `(?<!${regex_raw})`;
@@ -193,7 +197,7 @@ function replaceSpreads(content) {
         return getSpread(content, name);
     });
 
-    // Remove remaining spread blocks
+    //Remove remaining spread blocks
     return content.replace(new RegExp(regexs.spread_block.source, 'g'), '');
 }
 
@@ -387,13 +391,14 @@ module.exports = class Parser {
             return false;
         }
 
-        if (typeof general_regex == 'undefined') {
-            setRegex();
-        }
+        initRegex();
 
         let content = fs.readFileSync(dir, encoding);
-        let func = scoping ? '' : 'with (this)';
-        func += `{ let ${ARRAY} = [];`;
+        let func = `{ let ${ARRAY} = [];`;
+
+        if (!scoping) {
+            func = 'with (this)' + func;
+        }
 
         content = replaceCustom(content);
         content = replaceExtends(content);
@@ -483,17 +488,16 @@ module.exports = class Parser {
      * @returns {string} True in case of success, false otherwise.
      */
     set(key, first_val, last_val = '') {
-        if (typeof general_regex == 'undefined') {
-            setRegex();
-        }
+        initRegex();
 
-        switch(key) {
+        switch (key) {
             case 'code':
                 lookaround_regexs.code = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
                 lookaround_regexs.code_begin = new RegExp(`${regex_not_raw}(?=${first_val})(.*)(?<=:( ?){1,}${last_val})`);
                 lookaround_regexs.code_end = new RegExp(`${regex_not_raw}(?=${first_val})( ?){1,}end( ?){1,}(?<=${last_val})`);
                 break;
-            case 'print_plain': case 'print':
+            case 'print_plain':
+            case 'print':
                 lookaround_regexs[key] = new RegExp(`${regex_not_raw}(?=${first_val})(.*?)(?<=${last_val})`);
                 break;
             case 'comment':
