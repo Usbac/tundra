@@ -66,6 +66,10 @@ describe('General', function() {
         assert.equal(false, view.exists('login'));
     });
 
+    it('set() should return false when an invalid key is given', function() {
+        assert.equal(false, view.set('echo', '{{', '}}'));
+    })
+
     it('methods should be correctly mapped into the response through mapResponse()', function() {
         let res = {};
         view.mapResponse(res);
