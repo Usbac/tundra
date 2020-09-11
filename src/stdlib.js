@@ -109,10 +109,10 @@ url = (req, route) => {
         route = '/' + route;
     }
 
-    let protocol = 'http';
-    if (typeof req.connection.encrypted !== 'undefined') {
-        protocol = 'https';
-    }
+    let protocol =
+        typeof req.connection.encrypted !== 'undefined' ?
+        'https' :
+        'http';
 
     return protocol + '://' + req.headers.host + route;
 }
