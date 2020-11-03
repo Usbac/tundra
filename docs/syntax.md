@@ -2,7 +2,7 @@ This is the available syntax for the Tundra views.
 
 ## Print
 
-This will print the variable contained in the data object passed to the `render` or `getRender` method.
+This will print anything insite the tags, included variables contained in the data object passed to the `render` or `getRender` method.
 
 ```
 {{ variable }}
@@ -12,7 +12,7 @@ _For your safety anything printed inside this tags will be escaped._
 
 ## Raw print
 
-This will print the variable contained in the data object passed to the `render` or `getRender` method without escaping it.
+This will print anything insite the tags, included variables contained in the data object passed to the `render` or `getRender` method without escaping it.
 
 ```
 {! variable !}

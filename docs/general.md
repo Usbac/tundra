@@ -11,9 +11,9 @@ var view = new Tundra();
 
 `render(res, dir[, data])`
 
-This method will render the specified file to the response, it takes three parameters.
+Renders the specified file, it takes three parameters.
 
-The first is the request object, the second is the view directory and the third is the data object with the content that will be available in the view (this parameter is optional).
+The first is the response object, the second is the view file directory and the third is the data object with the content that will be available in the view (this parameter is optional).
 
 Example:
 
@@ -29,9 +29,9 @@ view.render(res, 'home.html', data);
 
 `getRender(dir[, data])`
 
-This method will return the specified view rendered by the engine, it takes two parameters.
+Returns the specified file rendered by the engine, it takes two parameters.
 
-The first is the view directory and the second is the data object with the content that will be available in the view (this parameter is optional).
+The first is the file view directory and the second is the data object with the content that will be available in the view (this parameter is optional).
 
 ```js
 let html;
@@ -60,7 +60,7 @@ In that example, if the `home.html` file doesn't exists it will return `false`.
 
 `setBase([dir])`
 
-This will set the base directory to be used.
+Sets the base directory to be used.
 
 ```js
 view.setBase('views');
@@ -70,7 +70,7 @@ view.setBase('views');
 
 `getBase()`
 
-This will return the base directory to be used.
+Returns the base directory to be used.
 
 ```js
 view.getBase();
@@ -80,7 +80,7 @@ view.getBase();
 
 `setExtension([new_extension])`
 
-This will set the default extension to be used.
+Sets the default extension to be used.
 
 ```js
 view.setExtension('html');
@@ -90,7 +90,7 @@ view.setExtension('html');
 
 `getExtension()`
 
-This will return the default extension being in use.
+Returns the default extension being in use.
 
 ```js
 view.getExtension();
@@ -100,7 +100,7 @@ view.getExtension();
 
 `setEncoding([new_encoding])`
 
-This will set the encoding to be used.
+Sets the encoding to be used.
 
 ```js
 view.setEncoding('UTF-8');
@@ -110,7 +110,7 @@ view.setEncoding('UTF-8');
 
 `getEncoding()`
 
-This will return the encoding being in use.
+Returns the encoding being in use.
 
 ```js
 view.getEncoding();
@@ -194,7 +194,7 @@ All of this using `ascii` as encoding for reading and writing to files and with 
 
 You can define custom rules or syntax for the Tundra parser with the `extend` method, so you can even create your own tags and modifications on the go.
 
-The function must take a string and return a string, these are supposed to be the view content. Obviously you can do whatever you want with it in the function.
+The function must take a string and return a string, this is supposed to be the view content. You can do whatever you want with it in the function.
 
 ```js
 view.extend(content => {
@@ -222,7 +222,7 @@ _Keep in mind that the custom syntax has a higher precedence than the Tundra syn
 
 With the `set` method you can customize most of the Tundra tags to your convenience.
 
-This method takes three parameters, the key or tag name to modify, the first value of the tag (left side) and the second or last value of the tag (right side). The last parameter is unnecessary when modifying the `raw` tag.
+This method takes three parameters: the key or tag name to modify, the first value of the tag (left side) and the second or last value of the tag (right side). The last parameter is unnecessary when modifying the `raw` tag.
 
 The available keys/tags to modify are the following:
 
@@ -250,7 +250,7 @@ After that you will be able to put code in your views this way:
 
 `mapResponse(res)`
 
-The `mapResponse` method will map some of the Tundra's methods into the given `ServerResponse` object. This can be done simply for avoiding code repetition.
+Maps some of the Tundra's methods into the given `ServerResponse` object. This can be done simply for avoiding code repetition.
 
 ```js
 view.mapResponse(res);

@@ -86,7 +86,7 @@ That will return `2.57`.
 
 `sum(...args)`
 
-This functions takes any numbers of parameters and will return the sum of all of them treated as numbers.
+Returns the sum of all the given arguments.
 
 ```js
 sum(1, "2.5", 3);
@@ -98,7 +98,7 @@ That will return `6.5`.
 
 `subtract(...args)`
 
-This functions takes any numbers of parameters and will return the subtraction of all of them treated as numbers.
+Returns the subtraction of all the given arguments.
 
 ```js
 subtract("2.5", "0.5", 1);
@@ -112,7 +112,7 @@ That will return `1`.
 
 Returns the average number of the giving array of numbers.
 
-The first parameter is the array with the numbers, the second parameter is optional and is the number of decimals in the number to return. By default it's 2.
+The first parameter is the array with the numeric values, the second parameter is optional and is the number of decimals in the number to return. By default it's 2.
 
 ```js
 let numbers = [4.5, 6, 3, 2.8, 9];

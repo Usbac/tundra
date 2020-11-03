@@ -6,22 +6,6 @@ For installing it just run:
 npm install tundrajs
 ```
 
-## Features
-
-* Easy to learn and with a small codebase.
-
-* Cache system for speeding up the loading of views.
-
-* Customizable syntax.
-
-* Standard library with useful functions.
-
-* Inheritance capabilities.
-
-* Reusable code blocks.
-
-* And more...
-
 ## Example
 
 The following example is done in pure Nodejs but Tundra integrates well with existing frameworks like `Express` :)
@@ -34,12 +18,9 @@ var Tundra = require('tundrajs');
 var view = new Tundra();
 
 http.createServer((req, res) => {
-    var data = {
+    view.render(res, 'home.html', {
         msg: 'Hello World!'
-    };
-
-    view.render(res, 'home.html', data);
-
+    });
 }).listen(8080);
 ```
 
