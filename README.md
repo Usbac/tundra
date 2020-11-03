@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="http://image.usbac.com.ve/Tundra.svg" alt="Tundra title" width="140">
+  <img src="http://image.usbac.com.ve/Tundra.png" alt="Tundra logo" width="140">
   <br>
   Tundra
   <br>
