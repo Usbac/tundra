@@ -65,8 +65,8 @@ module.exports = class View {
 
 
     /**
-     * Adds a custom rule to the parser. The parameter
-     * must be a closure that accepts and returns a string.
+     * Adds a custom rule to the parser.
+     * The parameter must be a closure that accepts and returns a string.
      * @param {function} func - The custom function.
      */
     extend(func) {

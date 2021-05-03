@@ -118,8 +118,7 @@ function updateNormalRegex() {
 
 
 /**
- * Returns a given regex without zero-length assertions
- * (lookarounds).
+ * Returns a given regex without zero-length assertions (lookarounds).
  * @param {string} regex - The regular expression.
  * @returns {string} The given regex without zero-length assertions.
  */
@@ -129,8 +128,7 @@ function noLookarounds(regex) {
 
 
 /**
- * Initializes the general regex based on the other
- * existing regex variables.
+ * Initializes the general regex based on the other existing regex variables.
  */
 function updateGeneralRegex() {
     general_regex = new RegExp(

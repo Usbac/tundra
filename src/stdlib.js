@@ -1,13 +1,12 @@
 /*
- * Standard library used by tundra,
- * the functions defined here can be called globally
+ * Standard library used by tundra.
+ * The functions defined here can be called globally
  * in the views rendered by the template.
  */
 
 
 /**
- * Returns the total sum of the given arguments, all of them are treated as
- * numbers.
+ * Returns the total sum of the given arguments.
  * @param {*} args - The argument list.
  * @returns {string} The sum of all the given arguments.
  */
@@ -23,8 +22,7 @@ sum = (...args) => {
 
 
 /**
- * Returns the total subtraction of the given arguments, all of them are treated as
- * numbers.
+ * Returns the total subtraction of the given arguments.
  * @param {*} args - The argument list.
  * @returns {string} The subtraction of all the given arguments.
  */
@@ -148,11 +146,13 @@ capitalize = (str) => {
 
 
 /**
- * Returns an array containing the numbers from the specified start to the specified end.
+ * Returns an array containing the numbers from the specified start to the
+ * specified end.
  * @param {Number} start - The start number.
  * @param {Number} end - The final number.
  * @param {Number} steps - The increase steps.
- * @returns {array} An array containing the numbers from the specified start to the specified end.
+ * @returns {array} The array containing the numbers from the specified start
+ * to the specified end.
  */
 range = (start, end, steps = 1) => {
     if (start > end) {
