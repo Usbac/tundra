@@ -1,80 +1,20 @@
-const path = require('path');
-const Cache = require('./cache.js');
-const cache = new Cache();
 const Parser = require('./parser.js');
 const parser = new Parser();
-
-/**
- * The file views extension.
- * @type {string}
- */
-let extension = '';
-
-/**
- * The base directory for the views.
- * @type {string}
- */
-let base_dir = '';
-
-
-/**
- * Returns a view rendered.
- * @param {string} dir - The file path.
- * @param {Object} [data] - The content used for the view.
- * @returns {string} A view rendered.
- */
-function getRender(dir, data = {}) {
-    let func = parser.get(dir);
-    let content = '';
-
-    if (func === false) {
-        return false;
-    }
-
-    try {
-        require('./stdlib.js');
-        content = new Function(func).apply(data);
-    } catch(err) {
-        throw new Error(err);
-    }
-
-    return content;
-}
-
 
 module.exports = class View {
 
     /**
      * @constructs
      * @param {Object} [options] - The default options used for the views.
-     * The valid options keys are: 'cache', 'encoding' and 'extesion'.
+     * The valid options keys are: 'encoding', 'base' and 'scoping'.
      */
     constructor(options = {}) {
-        this.setOptions(options);
-    }
-
-
-    /**
-     * Set the options.
-     * @param {Object} options - The default options used for the views.
-     * The valid options keys are: 'cache', 'encoding', 'base', 'extesion' and 'scoping'.
-     */
-    setOptions(options) {
-        if (options.hasOwnProperty('cache')) {
-            cache.active = options.cache;
-        }
-
         if (options.hasOwnProperty('encoding')) {
             this.setEncoding(options.encoding);
         }
 
         if (options.hasOwnProperty('base')) {
-            this.setBase(options.base);
             parser.setBase(options.base);
-        }
-
-        if (options.hasOwnProperty('extension')) {
-            this.setExtension(options.extension);
         }
 
         if (options.hasOwnProperty('scoping')) {
@@ -84,90 +24,29 @@ module.exports = class View {
 
 
     /**
-     * Map some of the general methods into the response.
-     * @param {ServerResponse} res - The connection response.
-     * @param {Object} [config] - The default options used for the views.
-     */
-    mapResponse(res) {
-        res.render = (dir, data) => {
-            return this.render(res, dir, data);
-        };
-
-        res.getRender = (dir, data) => {
-            return this.getRender(dir, data);
-        };
-
-        res.exists = (dir) => {
-            return this.exists(dir);
-        };
-    }
-
-
-    /**
      * Returns the content of a rendered view.
-     * @param {string} dir - The file path.
-     * @param {Object} [data] - The content used for the view.
+     * @param {string} content - The template content.
+     * @param {Object} [data] - The data used for the view.
      * @returns {string} The content of a rendered view.
      */
-    getRender(dir, data = {}) {
-        if (extension.length > 0) {
-            dir = `${dir}.${extension}`;
+    getRender(content, data = {}) {
+        try {
+            require('./stdlib.js');
+            return new Function(parser.get(content)).apply(data);
+        } catch(err) {
+            throw new Error(err);
         }
-
-        let complete_dir = path.join(base_dir, dir);
-
-        //Without cache
-        if (!cache.active) {
-            if (!parser.exists(complete_dir, true)) {
-                return false;
-            }
-
-            return getRender(complete_dir, data);
-        }
-
-        //With cache
-        if (!cache.has(dir)) {
-            if (!parser.exists(complete_dir, true)) {
-                return false;
-            }
-
-            cache.set(dir, parser.get(complete_dir));
-        }
-
-        return cache.get(dir, data);
     }
 
 
     /**
      * Renders the given view file.
      * @param {ServerResponse} res - The connection response.
-     * @param {string} dir - The file path.
-     * @param {Object} [data] - The content used for the view.
-     * @returns {bool} True if the view has been rendered, false otherwise.
+     * @param {string} content - The template content.
+     * @param {Object} [data] - The data used for the view.
      */
-    render(res, dir, data = {}) {
-        let content = this.getRender(dir, data);
-
-        if (content !== false) {
-            res.write(content);
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Returns true if the given file exists, false otherwise.
-     * @param {string} dir - The file directory.
-     * @returns {string} True if the given file exists, false otherwise.
-     */
-    exists(dir) {
-        if (extension.length > 0) {
-            dir = `${dir}.${extension}`;
-        }
-
-        return parser.exists(path.join(base_dir, dir));
+    render(res, content, data = {}) {
+        res.write(this.getRender(content, data));
     }
 
 
@@ -178,7 +57,7 @@ module.exports = class View {
      * @param {string} key - The regex tag to modify.
      * @param {string} first_val - The first (left) value of the tag.
      * @param {string} [last_val] - The last (right) value of the tag.
-     * @returns {string} True in case of success, false otherwise.
+     * @returns {bool} True in case of success, false otherwise.
      */
     set(key, first_val, last_val = '') {
         return parser.set(key, first_val, last_val);
@@ -192,61 +71,6 @@ module.exports = class View {
      */
     extend(func) {
         parser.extend(func);
-    }
-
-
-    /**
-     * Sets the file encoding used for the views.
-     * @param {string} [encoding] - The file encoding.
-     */
-    setEncoding(encoding = undefined) {
-        parser.setEncoding(encoding);
-    }
-
-
-    /**
-     * Returns the file encoding used for the views.
-     * @returns {string} The file encoding.
-     */
-    getEncoding() {
-        return parser.getEncoding();
-    }
-
-
-    /**
-     * Sets the base directory for the views.
-     * @param {string} [dir] - The new base directory.
-     */
-    setBase(dir = '') {
-        base_dir = dir;
-        parser.setBase(dir);
-    }
-
-
-    /**
-     * Returns the base directory for the views.
-     * @returns {string} The base directory.
-     */
-    getBase() {
-        return base_dir;
-    }
-
-
-    /**
-     * Sets the file extension used for the views.
-     * @param {string} [new_extension] - The new file extension.
-     */
-    setExtension(new_extension = '') {
-        extension = new_extension;
-    }
-
-
-    /**
-     * Returns the file extension used for the views.
-     * @returns {string} The file extension.
-     */
-    getExtension() {
-        return extension;
     }
 
 }

@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="http://image.usbac.com.ve/Tundra.png" alt="Tundra logo" width="140">
+  <img src="https://image.usbac.com.ve/Tundra.png" alt="Tundra logo" width="140">
   <br>
   Tundra
   <br>
@@ -9,7 +9,7 @@
 
 <p align="center">
     <img src="https://travis-ci.org/Usbac/tundra.svg?branch=master">
-    <img src="https://img.shields.io/badge/stable-2.0.1-blue.svg">
+    <img src="https://img.shields.io/badge/stable-3.0.0-blue.svg">
     <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
 
@@ -18,8 +18,6 @@ Tundra is a small, fast, customizable and easy to use template engine. It perfec
 ## Features
 
 * Easy to learn and lightweight.
-
-* Cache system for speeding up the loading of views.
 
 * Standard library with useful functions.
 
@@ -60,9 +58,7 @@ And **much** more...
 
 ## Example
 
-Rendering a view in pure Nodejs is this simple:
-
-main.js:
+Rendering a view in pure Nodejs web server is this simple:
 
 ```js
 var http = require('http');
@@ -70,25 +66,12 @@ var Tundra = require('tundrajs');
 var view = new Tundra();
 
 http.createServer((req, res) => {
-    view.render(res, 'home.html', {
-        title: 'Tundra',
-        msg: 'Hello World!'
+    view.render(res, '<p>{{ msg }}<p>', {
+        msg: 'Hello World!',
     });
 
     res.end();
 }).listen(8080);
-```
-
-home.html:
-```html
-<html>
-    <head>
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        Message is: {{ msg }}
-    </body>
-</html>
 ```
 
 ## Tests

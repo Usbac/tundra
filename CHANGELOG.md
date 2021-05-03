@@ -1,5 +1,21 @@
 # Release Notes
 
+## v3.0.0 (2021-05-03)
+
+### Changed
+
+- The first parameter of `getRender` is the template content instead of the path of a file with the template content.
+
+- The second parameter of `render` is the template content instead of the path of a file with the content.
+
+### Removed
+
+- `cache` and `extension` options for the constructor.
+
+- `cache` functionality.
+
+- `setExtension`, `getExtension`, `setOptions`, `exists`, `getEncoding`, `getBase`, `setBase`, `setEncoding` and `mapResponse` functions.
+
 ## v2.0.0 (2020-07-11)
 
 ### Added

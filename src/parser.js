@@ -2,8 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const ARRAY = 'tundra_' + getToken();
-const ERROR_PREFIX = 'Parser error:';
-const ERROR_INDEX = 'Undefined index';
 const ERROR_NOT_FOUND = 'File not found';
 const ERROR_BLOCK = 'No parent block found with the name';
 const ERROR_SPREAD = 'No spread block found with the name';
@@ -87,7 +85,7 @@ function initRegex() {
     regex_raw = '~';
     regex_not_raw = `(?<!${regex_raw})`;
 
-    //Update lookarounds regex
+    // Update lookarounds regex
     lookaround_regexs = {
         'block': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}block( ?){1,}([^\\]\\}]*)( ?){1,}(?<=\\]\\})([\\s\\S]*?)(\\{\\[)( ?){1,}endblock( ?){1,}(\\]\\})`),
         'parent': new RegExp(`${regex_not_raw}(?=\\{\\[)( ?){1,}parent([^\\]\\}]*)(?<=\\]\\})`),
@@ -149,37 +147,37 @@ function updateGeneralRegex() {
  * @returns {string} The function partial source code of the given element.
  */
 function getCode(element) {
-    //Comment
+    // Comment
     if (regexs.comment.test(element)) {
         return '';
     }
 
-    //Begin code block
+    // Begin code block
     if (regexs.code_begin.test(element)) {
         return `${element.replace(regexs.code_begin, '$2 {')}`;
     }
 
-    //End code block
+    // End code block
     if (regexs.code_end.test(element)) {
         return '}';
     }
 
-    //Code
+    // Code
     if (regexs.code.test(element)) {
         return `${element.replace(regexs.code, '$2')}`;
     }
 
-    //Print
+    // Print
     if (regexs.print.test(element)) {
         return `${ARRAY}.push(escape(${element.replace(regexs.print, '$2')}));`;
     }
 
-    //Print plain
+    // Print plain
     if (regexs.print_plain.test(element)) {
         return `${ARRAY}.push(${element.replace(regexs.print_plain, '$2')});`;
     }
 
-    //Text
+    // Text
     return `${ARRAY}.push(\`${element}\`);`;
 }
 
@@ -197,7 +195,7 @@ function replaceSpreads(content) {
         return getSpread(content, name);
     });
 
-    //Remove remaining spread blocks
+    // Remove remaining spread blocks
     return content.replace(new RegExp(regexs.spread_block.source, 'g'), '');
 }
 
@@ -269,11 +267,9 @@ function replaceRequire(content) {
 
 
 /**
- * Returns the content with the custom rules
- * applied over it.
+ * Returns the content with the custom rules applied over it.
  * @param {string} content - The view content.
- * @returns {string} The content with the custom rules
- * applied over it.
+ * @returns {string} The content with the custom rules applied over it.
  */
 function replaceCustom(content) {
     custom_list.forEach(e => {
@@ -285,8 +281,7 @@ function replaceCustom(content) {
 
 
 /**
- * Returns the processed code of a child view
- * based on its parent.
+ * Returns the processed code of a child view based on its parent.
  * @param {string} parent_dir - The parent file path.
  * @param {string} content - The child view content.
  */
@@ -297,7 +292,7 @@ function getInheritCode(parent_dir, content) {
 
     let parent_content = fs.readFileSync(parent_dir, encoding);
 
-    //Replace parent blocks tags with their respective code in the child view
+    // Replace parent blocks tags with their respective code in the child view
     let parent_regex = new RegExp(regexs.parent.source, 'gm');
 
     content = content.replace(parent_regex, e => {
@@ -305,7 +300,7 @@ function getInheritCode(parent_dir, content) {
         return getBlock(parent_content, block_name, true);
     });
 
-    //Replace child blocks import in the parent view
+    // Replace child blocks import in the parent view
     let block_regex = new RegExp(regexs.block.source, 'gm');
 
     parent_content = parent_content.replace(block_regex, e => {
@@ -375,25 +370,20 @@ function exists(dir) {
  * @param {string} context - The additional context.
  */
 function error(msg, context) {
-    console.log(`${ERROR_PREFIX} ${msg} (${context})`);
+    console.error(`Parser error: ${msg} (${context})`);
 }
 
 
 module.exports = class Parser {
 
     /**
-     * Returns the generated code of the given file path.
-     * @param {string} dir - The file path.
-     * @returns {string} The generated code of the given file path.
+     * Returns the generated code of the given content.
+     * @param {string} content - The template content.
+     * @returns {string} The generated code.
      */
-    get(dir) {
-        if (!exists(dir)) {
-            return false;
-        }
-
+    get(content) {
         initRegex();
 
-        let content = fs.readFileSync(dir, encoding);
         let func = `{ let ${ARRAY} = [];`;
 
         if (!scoping) {
@@ -415,23 +405,6 @@ module.exports = class Parser {
         func += `return ${ARRAY}.join(''); }`;
 
         return func;
-    }
-
-
-    /**
-     * Returns true if the given file exists, false otherwise.
-     * @param {string} dir - The file path.
-     * @param {bool} log - Log an error if the view does not exists.
-     * @returns {string} True if the given file exists, false otherwise.
-     */
-    exists(dir, log = false) {
-        let file_exists = exists(dir);
-
-        if (!file_exists && log) {
-            error(ERROR_NOT_FOUND, dir);
-        }
-
-        return file_exists;
     }
 
 
@@ -459,15 +432,6 @@ module.exports = class Parser {
      */
     setEncoding(new_encoding = DEFAULT_ENCODING) {
         encoding = new_encoding;
-    }
-
-
-    /**
-     * Returns the file encoding used for the views.
-     * @returns {string} The file encoding.
-     */
-    getEncoding() {
-        return encoding;
     }
 
 
@@ -508,7 +472,6 @@ module.exports = class Parser {
                 regex_not_raw = `(?<!${regex_raw})`;
                 break;
             default:
-                error(ERROR_INDEX, key);
                 return false;
         }
 
