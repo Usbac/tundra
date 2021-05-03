@@ -11,14 +11,10 @@
  * @returns {string} The sum of all the given arguments.
  */
 sum = (...args) => {
-    let result = 0;
-
-    for (let i = 0; i < args.length; i++) {
-        result += parseFloat(args[i]);
-    }
-
-    return result;
-}
+    return args.reduce((a, b) => {
+        return a + parseFloat(b);
+    }, 0);
+};
 
 
 /**
@@ -27,15 +23,10 @@ sum = (...args) => {
  * @returns {string} The subtraction of all the given arguments.
  */
 subtract = (...args) => {
-    let result = 0;
-    let i;
-
-    for (i = 0; i < args.length; i++) {
-        result -= parseFloat(args[i]);
-    }
-
-    return result;
-}
+    return args.reduce((a, b) => {
+        return a - parseFloat(b);
+    }, 0);
+};
 
 
 /**
