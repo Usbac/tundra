@@ -96,11 +96,11 @@ describe('Engine', function() {
         local_req.get('/child').expect(EXPECTED_CHILD_VIEW, done);
     });
 
-    it('should render a sample view correctly with the response object mapped', function(done) {
+    it('should render a sample view correctly with getRender()', function(done) {
         local_req.get('/res/home').expect(EXPECTED_VIEW, done);
     });
 
-    it('should render a sample child view correctly with the response object mapped', function(done) {
+    it('should render a sample child view correctly with getRender()', function(done) {
         local_req.get('/res/child').expect(EXPECTED_CHILD_VIEW, done);
     });
 });
